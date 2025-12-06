@@ -7,6 +7,7 @@ import DashBoardLayout from "../Layouts/DashBoardLayout";
 import ManageUser from "../Pages/Dashboard/AdminDashboard/ManageUser";
 import AllProducts from "../Pages/Dashboard/AdminDashboard/AllProducts";
 import AllOrders from "../Pages/Dashboard/AdminDashboard/AllOrders";
+import DashboardHome from "../Pages/Dashboard/DashboardHome/DashboardHome";
 
 export const router = createBrowserRouter([
   {
@@ -33,6 +34,10 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
+        Component: DashboardHome,
+      },
+      {
+        path: "manage-user",
         Component: ManageUser,
       },
       {

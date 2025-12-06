@@ -27,6 +27,7 @@ const Register = () => {
     const image_URL_API = `https://api.imgbb.com/1/upload?key=${
       import.meta.env.VITE_IMAGE_HOST
     }`;
+    console.log(data)
     registerUser(email, password).then((result) => {
       console.log(result.user);
       //   store the image
@@ -76,10 +77,10 @@ const Register = () => {
     googleSignIn()
       .then((res) => {
         const userInfo = {
-          userName: res.user.name,
+          userName: res.user.displayName,
           userEmail: res.user.email,
           photoURL: res.user.photoURL,
-          role: res.user.role,
+          role: 'Buyer',
           status: "pending",
           createdAt: new Date().toLocaleString(),
         };
