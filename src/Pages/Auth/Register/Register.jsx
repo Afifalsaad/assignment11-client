@@ -87,6 +87,7 @@ const Register = () => {
         //   Add user to database
         axiosSecure.post("/users", userInfo).then((res) => {
           console.log(res.data);
+          navigate('/')
           if (res.data.insertedId) {
             Swal.fire({
               title: "Registered Successfully",

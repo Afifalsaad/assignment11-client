@@ -38,6 +38,9 @@ const Navbar = () => {
       <li>
         <NavLink to="/">Contact</NavLink>
       </li>
+      <li>
+        <NavLink to="/dashboard">Dashboard</NavLink>
+      </li>
     </>
   );
 
@@ -115,7 +118,6 @@ const Navbar = () => {
                 </>
               )}
             </div>
-            
           </div>
         </div>
       </div>
