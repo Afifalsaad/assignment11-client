@@ -2,11 +2,12 @@ import React from "react";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router";
+import LoadingSpinner from "../Loading/Loading";
 
 const AllProductsHome = () => {
   const axiosSecure = useAxiosSecure();
 
-  const { data: products = [] } = useQuery({
+  const { data: products = [], isLoading } = useQuery({
     queryKey: ["products"],
     queryFn: async () => {
       const res = await axiosSecure.get("/all-products");
@@ -15,12 +16,16 @@ const AllProductsHome = () => {
     },
   });
 
+  if (isLoading) {
+    return <LoadingSpinner></LoadingSpinner>;
+  }
+
   return (
     <div className="max-w-11/12 mx-auto pt-5 p-6">
       <h2 className="text-4xl font-bold text-center py-8">
-        All Products: {products.length}
+        All Products: <span className="text-yellow-700">{products.length}</span>
       </h2>
-      <div className="grid grid-cols-3 gap-8 justify-center items-center text-left">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-center items-center text-left">
         {products.map((product) => (
           <div
             key={product._id}

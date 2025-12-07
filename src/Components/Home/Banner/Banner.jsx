@@ -1,7 +1,9 @@
 import React from "react";
 import banner from "../../../assets/view-from-flat-lay-woman-style-accessories-red-knitted-sweater-checkered-flannel-shirt-denim-jeans-hat-autumn-fashion-trend-vintage-photo-camera-traveler-outfit.jpg";
+import { Link } from "react-router";
 
 const Banner = () => {
+
   return (
     <div>
       <div className="relative">
@@ -17,8 +19,12 @@ const Banner = () => {
           the events. You can even see the approaching of a revolution in
           clothes. You can see and feel everything in clothes.
         </p>
+        <Link to='all-products'>
         <button className="top-20 lg:left-70 lg:top-20 md:left-24 absolute btn mr-3 text-secondary bg-primary/50 border-none">View Products</button>
+        </Link>
+        <Link to='all-products'>
         <button className="top-20 left-35 lg:left-105 lg:top-20 md:left-60 absolute btn bg-primary/50 border-none text-secondary">Book Products</button>
+        </Link>
       </div>
     </div>
   );

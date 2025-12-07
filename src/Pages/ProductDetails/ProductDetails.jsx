@@ -68,7 +68,7 @@ const ProductDetails = () => {
               {/* Payment Options */}
               <div className="mb-6">
                 <h3 className="font-semibold text-gray-800 mb-2">
-                  Payment Options: {product.payment_option}
+                  Payment Options: {product.payment_options}
                 </h3>
               </div>
             </div>

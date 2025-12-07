@@ -76,15 +76,15 @@ const Navbar = () => {
           </Link>
         </div>
         <ThemeSwitcher></ThemeSwitcher>
-        <div className="navbar-end hidden lg:flex font-semibold">
-          <div>
-            <ul className="menu menu-horizontal">{links}</ul>
+        <div className="hidden lg:flex font-semibold">
+          <div className="w-[500px]">
+            <ul className="menu flex-row">{links}</ul>
           </div>
 
           <div>
             <div>
               {user ? (
-                <div className="relative flex items-center gap-4 group mr-3">
+                <div className="items-center flex gap-4 group mr-3">
                   <button
                     onClick={handleLogout}
                     className="btn btn-primary text-black hover:cursor-pointer">
@@ -92,9 +92,9 @@ const Navbar = () => {
                   </button>
 
                   <button>
-                    {user.photoURL ? (
+                    { user.photoURL ? (
                       <img
-                        className="w-9 h-9 object-cover rounded-full hover:cursor-pointer"
+                        className="w-10 h-10 object-cover rounded-full hover:cursor-pointer"
                         src={user.photoURL}
                         alt="avatar"
                       />
@@ -104,7 +104,7 @@ const Navbar = () => {
                   </button>
                 </div>
               ) : (
-                <>
+                <div className="flex mr-4">
                   <Link
                     to="/login"
                     className="btn btn-primary text-black mx-2 hover:cursor-pointer">
@@ -115,7 +115,7 @@ const Navbar = () => {
                     className="btn btn-primary text-black hover:cursor-pointer">
                     Register
                   </Link>
-                </>
+                </div>
               )}
             </div>
           </div>

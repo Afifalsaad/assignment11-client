@@ -11,6 +11,7 @@ import AddProducts from "../Pages/Dashboard/ManagerDashboard/AddProducts";
 import AllProductsHome from "../Pages/AllProducts/AllProductsHome";
 import AllProducts from "../Pages/Dashboard/AdminDashboard/AllProducts";
 import ProductDetails from "../Pages/ProductDetails/ProductDetails";
+import PrivateRoute from "./PrivateRoute";
 
 export const router = createBrowserRouter([
   {
@@ -34,8 +35,12 @@ export const router = createBrowserRouter([
         Component: AllProductsHome,
       },
       {
-        path: '/productDetails/:id',
-        Component: ProductDetails
+        path: "/productDetails/:id",
+        element: (
+          <PrivateRoute>
+            <ProductDetails></ProductDetails>
+          </PrivateRoute>
+        ),
       },
     ],
   },
