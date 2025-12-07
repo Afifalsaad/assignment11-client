@@ -1,14 +1,12 @@
 import React from "react";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
-import { useLocation, useParams } from "react-router";
+import { Link, useParams } from "react-router";
 import useRole from "../../Hooks/useRole";
 
 const ProductDetails = () => {
   const { id } = useParams();
   const { role } = useRole();
-  const location = useLocation();
-//   console.log(location);
 
   const axiosSecure = useAxiosSecure();
 
@@ -20,9 +18,6 @@ const ProductDetails = () => {
     },
   });
 
-  const handleOrder = () => {
-    console.log("clicked");
-  };
 
   return (
     <div className="min-h-screen py-10 px-4">
@@ -82,14 +77,15 @@ const ProductDetails = () => {
             </div>
 
             {/* Order Button */}
-            <div>
-              <button
-                onClick={handleOrder}
-                disabled={role !== "user"}
-                className="w-full py-3 rounded-xl bg-primary disabled:bg-primary/50 disabled:hover:cursor-not-allowed text-black font-semibold text-lg hover:bg-yellow-500 low transition">
-                Order / Book Now
-              </button>
-            </div>
+            <Link to={`/order-product/${product._id}`}>
+              <div>
+                <button
+                  disabled={role !== "user"}
+                  className="w-full py-3 rounded-xl bg-primary disabled:bg-primary/50 disabled:hover:cursor-not-allowed text-black font-semibold text-lg hover:bg-yellow-500 low transition">
+                  Order / Book Now
+                </button>
+              </div>
+            </Link>
           </div>
         </div>
 

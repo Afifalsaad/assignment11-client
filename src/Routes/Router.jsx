@@ -12,6 +12,7 @@ import AllProductsHome from "../Pages/AllProducts/AllProductsHome";
 import AllProducts from "../Pages/Dashboard/AdminDashboard/AllProducts";
 import ProductDetails from "../Pages/ProductDetails/ProductDetails";
 import PrivateRoute from "./PrivateRoute";
+import OrderProduct from "../Pages/OrderProduct/OrderProduct";
 
 export const router = createBrowserRouter([
   {
@@ -39,6 +40,14 @@ export const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <ProductDetails></ProductDetails>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/order-product/:id",
+        element: (
+          <PrivateRoute>
+            <OrderProduct></OrderProduct>
           </PrivateRoute>
         ),
       },
