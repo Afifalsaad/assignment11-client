@@ -11,7 +11,6 @@ const AllProductsHome = () => {
     queryKey: ["products"],
     queryFn: async () => {
       const res = await axiosSecure.get("/all-products");
-      console.log(res.data);
       return res.data;
     },
   });

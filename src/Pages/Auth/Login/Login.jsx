@@ -2,12 +2,14 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import useAuth from "../../../Hooks/useAuth";
 import Swal from "sweetalert2";
-import { Link, useNavigate } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 
 const Login = () => {
   const { googleSignIn } = useAuth();
   const { register, handleSubmit } = useForm();
   const navigate = useNavigate();
+  const location = useLocation();
+  console.log(location);
 
   const handleLogin = (data) => {
     console.log(data);
@@ -15,13 +17,12 @@ const Login = () => {
 
   const handleGoogleLogin = () => {
     googleSignIn()
-      .then((res) => {
-        console.log(res);
+      .then(() => {
         Swal.fire({
           title: "Logged In",
           icon: "success",
         });
-        navigate("/");
+        navigate(location?.state || "/");
       })
       .catch((error) => {
         console.log(error);
@@ -59,7 +60,14 @@ const Login = () => {
                   <button className="btn btn-primary text-black">Login</button>
                 </fieldset>
               </form>
-              <p>New here? <Link to='/register'><span className="underline hover:cursor-pointer">Register</span></Link></p>
+              <p>
+                New here?{" "}
+                <Link to="/register">
+                  <span className="underline hover:cursor-pointer">
+                    Register
+                  </span>
+                </Link>
+              </p>
 
               {/* Google SignIn */}
               <button

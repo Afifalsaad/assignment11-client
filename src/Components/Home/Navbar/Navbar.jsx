@@ -84,7 +84,7 @@ const Navbar = () => {
           <div>
             <div>
               {user ? (
-                <div className="items-center flex gap-4 group mr-3">
+                <div className="relative items-center flex gap-4 group mr-3">
                   <button
                     onClick={handleLogout}
                     className="btn btn-primary text-black hover:cursor-pointer">
@@ -92,9 +92,9 @@ const Navbar = () => {
                   </button>
 
                   <button>
-                    { user.photoURL ? (
+                    {user.photoURL ? (
                       <img
-                        className="w-10 h-10 object-cover rounded-full hover:cursor-pointer"
+                        className="w-9 h-9 object-cover rounded-full hover:cursor-pointer"
                         src={user.photoURL}
                         alt="avatar"
                       />

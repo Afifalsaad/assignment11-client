@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 import useAuth from "../../../Hooks/useAuth";
-import { Link, Navigate, useNavigate } from "react-router";
+import { Link, Navigate, useLocation, useNavigate } from "react-router";
 import axios from "axios";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
@@ -12,6 +12,8 @@ const Register = () => {
   const axiosSecure = useAxiosSecure();
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+
   const {
     register,
     handleSubmit,
@@ -43,7 +45,7 @@ const Register = () => {
         // update user profile
         updateUserProfile(updatedProfile)
           .then(() => {
-            navigate("/");
+            navigate(location?.state || "/");
           })
           .catch((error) => {
             console.log(error);
@@ -78,21 +80,20 @@ const Register = () => {
           userName: res.user.displayName,
           userEmail: res.user.email,
           photoURL: res.user.photoURL,
-          role: 'Buyer',
+          role: "Buyer",
           status: "pending",
           createdAt: new Date().toLocaleString(),
         };
 
         //   Add user to database
         axiosSecure.post("/users", userInfo).then((res) => {
-          console.log(res.data);
-          navigate('/')
+          navigate(location?.state || "/");
           if (res.data.insertedId) {
             Swal.fire({
               title: "Registered Successfully",
               icon: "success",
             });
-            navigate("/");
+            navigate(location?.state || "/");
           }
         });
       })

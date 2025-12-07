@@ -1,10 +1,14 @@
 import React from "react";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
-import { useParams } from "react-router";
+import { useLocation, useParams } from "react-router";
+import useRole from "../../Hooks/useRole";
 
 const ProductDetails = () => {
   const { id } = useParams();
+  const { role } = useRole();
+  const location = useLocation();
+//   console.log(location);
 
   const axiosSecure = useAxiosSecure();
 
@@ -15,6 +19,10 @@ const ProductDetails = () => {
       return res.data;
     },
   });
+
+  const handleOrder = () => {
+    console.log("clicked");
+  };
 
   return (
     <div className="min-h-screen py-10 px-4">
@@ -68,14 +76,17 @@ const ProductDetails = () => {
               {/* Payment Options */}
               <div className="mb-6">
                 <h3 className="font-semibold text-gray-800 mb-2">
-                  Payment Options: {product.payment_options}
+                  Payment Options: {product.payment_option}
                 </h3>
               </div>
             </div>
 
             {/* Order Button */}
             <div>
-              <button className="w-full py-3 rounded-xl bg-indigo-600 text-white font-semibold text-lg hover:bg-indigo-700 transition">
+              <button
+                onClick={handleOrder}
+                disabled={role !== "user"}
+                className="w-full py-3 rounded-xl bg-primary disabled:bg-primary/50 disabled:hover:cursor-not-allowed text-black font-semibold text-lg hover:bg-yellow-500 low transition">
                 Order / Book Now
               </button>
             </div>
