@@ -4,6 +4,7 @@ import { Link, Outlet } from "react-router";
 import { FaUsersCog } from "react-icons/fa";
 import { AiFillProduct } from "react-icons/ai";
 import { MdBorderColor } from "react-icons/md";
+import { IoMdAddCircle } from "react-icons/io";
 
 const DashBoardLayout = () => {
   return (
@@ -13,7 +14,7 @@ const DashBoardLayout = () => {
         <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
         <div className="drawer-content">
           {/* Navbar */}
-          <nav className="navbar w-full bg-gray-100 text-black">
+          <nav className="navbar w-full bg-primary/40 text-black">
             <label
               htmlFor="my-drawer-4"
               aria-label="open sidebar"
@@ -36,7 +37,7 @@ const DashBoardLayout = () => {
             <div className="px-4 font-semibold">Dashboard</div>
           </nav>
           {/* Page content here */}
-          <div className="p-4 bg-gray-100 min-h-screen text-black">
+          <div className="p-4 bg-primary/40 min-h-screen text-black">
             <Outlet></Outlet>
           </div>
         </div>
@@ -46,7 +47,7 @@ const DashBoardLayout = () => {
             htmlFor="my-drawer-4"
             aria-label="close sidebar"
             className="drawer-overlay"></label>
-          <div className="flex min-h-full flex-col items-start bg-gray-100  text-black is-drawer-close:w-14 is-drawer-open:w-64">
+          <div className="flex min-h-full flex-col items-start bg-primary/40  text-black is-drawer-close:w-14 is-drawer-open:w-64">
             {/* Sidebar content here */}
             <ul className="menu w-full grow">
               {/* List item */}
@@ -109,6 +110,20 @@ const DashBoardLayout = () => {
                     {/* Icon */}
                     <MdBorderColor />
                     <span className="is-drawer-close:hidden">All Orders</span>
+                  </button>
+                </li>
+              </Link>
+
+              {/* --------------- Manager Only Routes */}
+              {/* Add Products */}
+              <Link to="/dashboard/add-products">
+                <li>
+                  <button
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                    data-tip="add products">
+                    {/* Icon */}
+                    <IoMdAddCircle />
+                    <span className="is-drawer-close:hidden">Add Products</span>
                   </button>
                 </li>
               </Link>

@@ -27,9 +27,7 @@ const Register = () => {
     const image_URL_API = `https://api.imgbb.com/1/upload?key=${
       import.meta.env.VITE_IMAGE_HOST
     }`;
-    console.log(data)
-    registerUser(email, password).then((result) => {
-      console.log(result.user);
+    registerUser(email, password).then(() => {
       //   store the image
       const formData = new FormData();
       formData.append("image", ProfileImg);

@@ -8,6 +8,7 @@ import ManageUser from "../Pages/Dashboard/AdminDashboard/ManageUser";
 import AllProducts from "../Pages/Dashboard/AdminDashboard/AllProducts";
 import AllOrders from "../Pages/Dashboard/AdminDashboard/AllOrders";
 import DashboardHome from "../Pages/Dashboard/DashboardHome/DashboardHome";
+import AddProducts from "../Pages/Dashboard/ManagerDashboard/AddProducts";
 
 export const router = createBrowserRouter([
   {
@@ -47,6 +48,10 @@ export const router = createBrowserRouter([
       {
         path: "all-orders",
         Component: AllOrders,
+      },
+      {
+        path: "add-products",
+        Component: AddProducts,
       },
     ],
   },
