@@ -12,9 +12,15 @@ const OurProducts = () => {
         </figure>
         <div className="">
           <h2 className="my-1">Premium Hoodie Drop Shoulder</h2>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Error facilis possimus doloremque ratione? Incidunt, omnis asperiores fugiat laboriosam odio maxime.</p>
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Error
+            facilis possimus doloremque ratione? Incidunt, omnis asperiores
+            fugiat laboriosam odio maxime.
+          </p>
           <div className="card-actions mt-2">
-            <button className="px-3 py-1 border border-[#dfdfdf] text-sm hover:border-black">L</button>
+            <button className="px-3 py-1 border border-[#dfdfdf] text-sm hover:border-black">
+              L
+            </button>
             <p className="px-3 py-1 border text-sm">M</p>
             <p className="px-3 py-1 border text-sm">XL</p>
             <p className="px-3 py-1 border text-sm">XXL</p>

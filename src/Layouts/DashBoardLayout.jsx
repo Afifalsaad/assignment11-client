@@ -89,7 +89,7 @@ const DashBoardLayout = () => {
               </Link>
 
               {/* All Products */}
-              <Link to="/dashboard/all-orders">
+              <Link to="/dashboard/all-products-admin">
                 <li>
                   <button
                     className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
@@ -101,8 +101,8 @@ const DashBoardLayout = () => {
                 </li>
               </Link>
 
-              {/* All Products */}
-              <Link to="/dashboard/all-products">
+              {/* All Orders */}
+              <Link to="/dashboard/all-orders">
                 <li>
                   <button
                     className="is-drawer-close:tooltip is-drawer-close:tooltip-right"

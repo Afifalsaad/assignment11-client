@@ -3,11 +3,13 @@ import { useForm } from "react-hook-form";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import axios from "axios";
 import Swal from "sweetalert2";
+import useAuth from "../../../Hooks/useAuth";
 
 const AddProducts = () => {
+  const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
   const [previews, setPreviews] = useState([]);
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, reset } = useForm();
 
   const handlePreview = (e) => {
     const files = Array.from(e.target.files);
@@ -17,7 +19,6 @@ const AddProducts = () => {
 
   const handleAddProduct = async (data) => {
     const images = Array.from(data.images);
-    console.log(images);
     const image_URL_API = `https://api.imgbb.com/1/upload?key=${
       import.meta.env.VITE_IMAGE_HOST
     }`;
@@ -31,9 +32,9 @@ const AddProducts = () => {
       const res = await axios.post(image_URL_API, formData);
       imageURLs.push(res.data.data.url);
     }
-
     const productDetails = {
       name: data.productName,
+      email: user.email,
       category: data.category,
       price: data.price,
       available_quantity: data.availableQuantity,
@@ -43,9 +44,9 @@ const AddProducts = () => {
       demo_video: data.demoVideo,
       payment_option: data.paymentOption,
     };
-
     axiosSecure.post("/products", productDetails).then((res) => {
       if (res.data.insertedId) {
+        reset();
         Swal.fire({
           title: "Product Added Successfully",
           icon: "success",
@@ -110,8 +111,6 @@ const AddProducts = () => {
               <textarea
                 {...register("productDescription")}
                 className="border border-[#d1d1d1] p-1 rounded-md mb-4 bg-white"
-                name=""
-                id=""
                 rows="6"
                 placeholder="Description"></textarea>
             </fieldset>
@@ -132,7 +131,9 @@ const AddProducts = () => {
 
               {/* Product Image */}
               <label className="font-bold text-md">Image</label>
-              <p className="text-[10px] text-gray-500">Select image pressing 'Ctrl' button.</p>
+              <p className="text-[10px] text-gray-500">
+                Select image pressing 'Ctrl' button.
+              </p>
               <input
                 type="file"
                 {...register("images")}
@@ -153,13 +154,13 @@ const AddProducts = () => {
                 ))}
               </div>
 
-              {/* Receiver Email */}
+              {/* Demo Video */}
               <label className="font-bold text-md">Demo Video</label>
               <input
-                type="text"
+                type="file"
                 {...register("demoVideo")}
-                className="input w-full mb-4  bg-white"
-                placeholder="Email"
+                className="file-input w-full mb-4  bg-white"
+                placeholder="Video"
               />
 
               {/* Payment Options */}
