@@ -58,11 +58,15 @@ const MyOrders = () => {
                 <td>{order.order_price}</td>
                 <td>{order.payment_option}</td>
                 <td>
-                  <button
-                    onClick={() => handlePayment(order)}
-                    className="btn btn-primary btn-outline text-black">
-                    Pay
-                  </button>
+                  {order.payment_status === "paid" ? (
+                    <span className="text-green-400 font-bold">Paid</span>
+                  ) : (
+                    <button
+                      onClick={() => handlePayment(order)}
+                      className="btn btn-primary btn-outline text-black">
+                      Pay
+                    </button>
+                  )}
                 </td>
               </tr>
             ))}
