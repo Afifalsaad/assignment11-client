@@ -91,17 +91,19 @@ const Navbar = () => {
                     Logout
                   </button>
 
-                  <button>
-                    {user.photoURL ? (
-                      <img
-                        className="w-9 h-9 object-cover rounded-full hover:cursor-pointer"
-                        src={user.photoURL}
-                        alt="avatar"
-                      />
-                    ) : (
-                      <RxAvatar className="text-3xl hover:cursor-pointer text-black" />
-                    )}
-                  </button>
+                  <div>
+                    <div className="w-9 h-9 overflow-hidden rounded-full">
+                      {user.photoURL ? (
+                        <img
+                          className="w-full h-full object-cover hover:cursor-pointer"
+                          src={user.photoURL}
+                          alt="avatar"
+                        />
+                      ) : (
+                        <RxAvatar className="text-3xl hover:cursor-pointer text-black" />
+                      )}
+                    </div>
+                  </div>
                 </div>
               ) : (
                 <div className="flex mr-4">

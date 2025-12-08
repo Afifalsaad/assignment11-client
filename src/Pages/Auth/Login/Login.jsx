@@ -5,14 +5,27 @@ import Swal from "sweetalert2";
 import { Link, useLocation, useNavigate } from "react-router";
 
 const Login = () => {
-  const { googleSignIn } = useAuth();
+  const { googleSignIn, loginUser } = useAuth();
   const { register, handleSubmit } = useForm();
   const navigate = useNavigate();
   const location = useLocation();
   console.log(location);
 
   const handleLogin = (data) => {
-    console.log(data);
+    const email = data.email;
+    const password = data.password;
+    console.log(email,password)
+    loginUser(email, password)
+      .then(() => {
+        Swal.fire({
+          title: "Logged In",
+          icon: "success",
+        });
+        navigate(location?.state || "/");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const handleGoogleLogin = () => {
@@ -42,7 +55,7 @@ const Login = () => {
                 <fieldset className="fieldset">
                   <label className="label">Email</label>
                   <input
-                    {...register("name")}
+                    {...register("email")}
                     type="email"
                     className="input"
                     placeholder="Email"

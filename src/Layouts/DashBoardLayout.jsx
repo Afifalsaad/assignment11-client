@@ -1,7 +1,7 @@
 import React from "react";
 import Navbar from "../Components/Home/Navbar/Navbar";
 import { Link, Outlet } from "react-router";
-import { FaUsersCog } from "react-icons/fa";
+import { FaJediOrder, FaShoppingCart, FaUsersCog } from "react-icons/fa";
 import { AiFillProduct } from "react-icons/ai";
 import { MdBorderColor } from "react-icons/md";
 import { IoMdAddCircle } from "react-icons/io";
@@ -75,6 +75,19 @@ const DashBoardLayout = () => {
               </Link>
 
               {/* List item */}
+              {/* My Orders */}
+              <Link to="/dashboard/my-orders">
+                <li>
+                  <button
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                    data-tip="My Orders">
+                    {/* Icon */}
+                    <FaShoppingCart />
+                    <span className="is-drawer-close:hidden">My Orders</span>
+                  </button>
+                </li>
+              </Link>
+
               {/* Manage User */}
               <Link to="/dashboard/manage-user">
                 <li>

@@ -1,13 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import Swal from "sweetalert2";
+import useAuth from "../../Hooks/useAuth";
 
 const OrderProduct = () => {
+  const { user } = useAuth();
   const { id } = useParams();
   const axiosSecure = useAxiosSecure();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -33,14 +36,15 @@ const OrderProduct = () => {
     if (product) {
       setValue("price", product.price);
       setValue("title", product.name);
-      setValue("email", product.email);
+      setValue("email", user?.email);
       setValue("orderPrice", totalPrice);
     }
-  }, [product, setValue, totalPrice]);
+  }, [product, setValue, totalPrice, user]);
 
   const handleOrderProduct = (data) => {
     const orderDetails = {
-      email: data.email,
+      id: id,
+      email: user?.email,
       title: data.title,
       price: data.price,
       first_name: data.firstName,
@@ -50,8 +54,9 @@ const OrderProduct = () => {
       number: data.number,
       address: data.deliveryAddress,
       note: data.note,
+      payment_option: product.payment_option,
+      payment_status: "pending",
     };
-    console.log(orderDetails);
 
     axiosSecure.post("/order-product", orderDetails).then((res) => {
       if (res.data.insertedId) {
@@ -59,6 +64,7 @@ const OrderProduct = () => {
           title: "Order Placed",
           icon: "success",
         });
+        navigate("/dashboard/my-orders");
       }
     });
   };
@@ -78,7 +84,7 @@ const OrderProduct = () => {
                 {/* Email */}
                 <label className="font-bold text-md">Email</label>
                 <input
-                  defaultValue={product.email}
+                  defaultValue={user.email}
                   type="email"
                   {...register("email")}
                   className="input w-full mb-4 bg-white"

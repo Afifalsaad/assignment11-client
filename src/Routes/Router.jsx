@@ -13,6 +13,9 @@ import AllProducts from "../Pages/Dashboard/AdminDashboard/AllProducts";
 import ProductDetails from "../Pages/ProductDetails/ProductDetails";
 import PrivateRoute from "./PrivateRoute";
 import OrderProduct from "../Pages/OrderProduct/OrderProduct";
+import MyOrders from "../Pages/Dashboard/MyOrders/MyOrders";
+import PaymentSuccessful from "../Pages/Dashboard/Payments/PaymentSuccessful";
+import PaymentCanceled from "../Pages/Dashboard/Payments/PaymentCanceled";
 
 export const router = createBrowserRouter([
   {
@@ -55,11 +58,39 @@ export const router = createBrowserRouter([
   },
   {
     path: "/dashboard",
-    Component: DashBoardLayout,
+    element: (
+      <PrivateRoute>
+        <DashBoardLayout></DashBoardLayout>
+      </PrivateRoute>
+    ),
     children: [
       {
         index: true,
         Component: DashboardHome,
+      },
+      {
+        path: "my-orders",
+        element: (
+          <PrivateRoute>
+            <MyOrders></MyOrders>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "payment-success",
+        element: (
+          <PrivateRoute>
+            <PaymentSuccessful></PaymentSuccessful>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "payment-cancelled",
+        element: (
+          <PrivateRoute>
+            <PaymentCanceled></PaymentCanceled>
+          </PrivateRoute>
+        ),
       },
       {
         path: "manage-user",

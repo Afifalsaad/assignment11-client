@@ -80,8 +80,8 @@ const ProductDetails = () => {
             <Link to={`/order-product/${product._id}`}>
               <div>
                 <button
-                  disabled={role !== "user"}
-                  className="w-full py-3 rounded-xl bg-primary disabled:bg-primary/50 disabled:hover:cursor-not-allowed text-black font-semibold text-lg hover:bg-yellow-500 low transition">
+                  disabled={role !== "Buyer"}
+                  className="w-full py-3 rounded-xl bg-primary hover:cursor-pointer disabled:bg-primary/50 disabled:hover:cursor-not-allowed text-black font-semibold text-lg hover:bg-yellow-500 low transition">
                   Order / Book Now
                 </button>
               </div>
