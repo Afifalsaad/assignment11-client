@@ -13,10 +13,17 @@ const ManageUser = () => {
   const { role } = useRole();
   const { register, handleSubmit } = useForm();
   const [selectedUser, setSelectedUser] = useState(null);
+  console.log(selectedUser);
+
+  const { data: users = [], refetch } = useQuery({
+    queryKey: ["users"],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/users");
+      return res.data;
+    },
+  });
 
   const handleSuspend = async (data) => {
-    console.log("selected User", selectedUser);
-    console.log("data", data);
     const reason = {
       reason: data.reason,
       feedback: data.feedback,
@@ -26,18 +33,11 @@ const ManageUser = () => {
       .post(`/suspend/${selectedUser._id}`, reason)
       .then((res) => {
         if (res.data.insertedId) {
-          console.log("suspend");
+          refetch();
+          console.log(res.data);
         }
       });
   };
-
-  const { data: users = [], refetch } = useQuery({
-    queryKey: ["users"],
-    queryFn: async () => {
-      const res = await axiosSecure.get("/users");
-      return res.data;
-    },
-  });
 
   const handleShowModal = (user) => {
     setSelectedUser(user);
@@ -130,8 +130,9 @@ const ManageUser = () => {
 
                     <button
                       onClick={() => handleShowModal(user)}
-                      className="btn bg-[#CD5C5C] text-white border-none ml-1">
-                      Suspend
+                      disabled={user.role === "suspended"}
+                      className="btn bg-[#CD5C5C] text-white border-none ml-1 hover:cursor-pointer disabled:bg-[#f2a7a7] disabled:hover:cursor-not-allowed">
+                      {user.role === "suspended" ? "Suspended" : "Suspend"}
                     </button>
                   </td>
                 )}
