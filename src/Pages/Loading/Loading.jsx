@@ -2,7 +2,7 @@ import React from "react";
 
 const LoadingSpinner = () => {
   return (
-    <div className="flex justify-center items-center h-screen bg-white/60 backdrop-blur-sm">
+    <div className="flex justify-center items-center h-screen">
       <div className="relative">
         {/* Outer Ring */}
         <div className="h-20 w-20 rounded-full border-4 border-gray-300"></div>

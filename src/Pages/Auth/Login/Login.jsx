@@ -6,7 +6,7 @@ import { Link, useLocation, useNavigate } from "react-router";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 
 const Login = () => {
-  const { googleSignIn, loginUser, user } = useAuth();
+  const { googleSignIn, loginUser } = useAuth();
   const axiosSecure = useAxiosSecure();
   const { register, handleSubmit } = useForm();
   const navigate = useNavigate();

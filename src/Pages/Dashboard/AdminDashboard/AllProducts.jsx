@@ -4,19 +4,21 @@ import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import Swal from "sweetalert2";
+import LoadingSpinner from "../../Loading/Loading";
 
 const AllProducts = () => {
   const axiosSecure = useAxiosSecure();
   const modalRef = useRef();
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [previews, setPreviews] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const { register, handleSubmit, reset } = useForm();
   const { data: products = [], refetch } = useQuery({
     queryKey: [],
     queryFn: async () => {
       const res = await axiosSecure.get("/all-products");
-
+      console.log(res.data.result);
       return res.data.result;
     },
   });
@@ -33,6 +35,7 @@ const AllProducts = () => {
   };
 
   const handleUpdate = async (data) => {
+    setLoading(true);
     const images = Array.from(data.images);
     const videos = Array.from(data.demoVideo);
     const image_URL_API = `https://api.imgbb.com/1/upload?key=${
@@ -59,6 +62,7 @@ const AllProducts = () => {
       const res = await axios.post(video_URL_API, formData);
       videoURLs.push(res.data.data.url);
     }
+    console.log(imageURLs);
 
     const updatedInfo = {
       name: data.name,
@@ -75,14 +79,40 @@ const AllProducts = () => {
       updatedInfo
     );
     if (res.data.modifiedCount) {
+      setLoading(false);
       refetch();
       modalRef.current.close();
       reset();
+      setPreviews([]);
       Swal.fire({
         title: "Info Updated",
         icon: "success",
       });
     }
+  };
+
+  const handleDelete = async (product) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: `You want to delete ${product.name}from list?`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const res = await axiosSecure.delete(`/delete-product/${product._id}`);
+        if (res.data.deletedCount) {
+          console.log(res.data);
+          Swal.fire({
+            title: "Deleted",
+            icon: "warning",
+          });
+          refetch();
+        }
+      }
+    });
   };
 
   const handleShowOnHome = (product) => {
@@ -94,8 +124,18 @@ const AllProducts = () => {
     });
   };
 
+  const handleSubmitBtn = () => {
+    modalRef.current.close();
+    reset();
+  };
+
   return (
     <div>
+      {loading && (
+        <div className="absolute h-screen inset-0 bg-white/50 flex items-center justify-center z-50 rounded-lg backdrop:bg-none">
+          <LoadingSpinner />
+        </div>
+      )}
       <h2 className="text-4xl font-bold text-center py-12">
         All Products: {products.length}
       </h2>
@@ -123,7 +163,11 @@ const AllProducts = () => {
                       <div className="flex items-center gap-3">
                         <div className="avatar">
                           <div className="mask mask-squircle h-12 w-12">
-                            <img src={product.image} />
+                            <img
+                              src={product.image?.[0]}
+                              alt={product.name}
+                              className="w-full h-full object-cover"
+                            />
                           </div>
                         </div>
                         <div>
@@ -154,7 +198,9 @@ const AllProducts = () => {
                         Update
                       </button>
 
-                      <button className="btn bg-[#CD5C5C] text-white border-none ml-1 hover:cursor-pointerF">
+                      <button
+                        onClick={() => handleDelete(product)}
+                        className="btn bg-[#CD5C5C] text-white border-none ml-1 hover:cursor-pointerF">
                         Delete
                       </button>
                     </td>
@@ -268,7 +314,11 @@ const AllProducts = () => {
                   </select>
                 </fieldset>
               </div>
-              <button className="btn btn-primary text-black">Submit</button>
+              <button
+                onClick={handleSubmitBtn}
+                className="btn btn-primary text-black">
+                Submit
+              </button>
             </form>
           </div>
 
@@ -290,7 +340,7 @@ const AllProducts = () => {
             <div className="flex items-center gap-3 mb-3">
               <div className="avatar">
                 <div className="mask mask-squircle h-14 w-14">
-                  <img src={product.image[0]} />
+                  <img src={product.image?.[0]} />
                 </div>
               </div>
               <h3 className="font-semibold">{product.name}</h3>

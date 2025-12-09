@@ -4,12 +4,18 @@ import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import axios from "axios";
 import Swal from "sweetalert2";
 import useAuth from "../../../Hooks/useAuth";
+import LoadingSpinner from "../../Loading/Loading";
 
 const AddProducts = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
   const [previews, setPreviews] = useState([]);
+  const [loading, setLoading] = useState(false);
   const { register, handleSubmit, reset } = useForm();
+
+  if (loading) {
+    return <LoadingSpinner></LoadingSpinner>;
+  }
 
   const handlePreview = (e) => {
     const files = Array.from(e.target.files);
@@ -18,6 +24,7 @@ const AddProducts = () => {
   };
 
   const handleAddProduct = async (data) => {
+    setLoading(true);
     const images = Array.from(data.images);
     const image_URL_API = `https://api.imgbb.com/1/upload?key=${
       import.meta.env.VITE_IMAGE_HOST
@@ -53,6 +60,7 @@ const AddProducts = () => {
         });
       }
     });
+    setLoading(false);
   };
 
   return (
