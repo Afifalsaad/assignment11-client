@@ -1,9 +1,17 @@
 import { useQuery } from "@tanstack/react-query";
-import React from "react";
+import React, { useRef, useState } from "react";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
+import { useForm } from "react-hook-form";
+import axios from "axios";
+import Swal from "sweetalert2";
 
 const AllProducts = () => {
   const axiosSecure = useAxiosSecure();
+  const modalRef = useRef();
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [previews, setPreviews] = useState([]);
+
+  const { register, handleSubmit, reset } = useForm();
   const { data: products = [], refetch } = useQuery({
     queryKey: [],
     queryFn: async () => {
@@ -13,8 +21,71 @@ const AllProducts = () => {
     },
   });
 
+  const handlePreview = (e) => {
+    const files = Array.from(e.target.files);
+    const urls = files.map((file) => URL.createObjectURL(file));
+    setPreviews((prev) => [...prev, ...urls]);
+  };
+
+  const handleShowModal = (product) => {
+    setSelectedProduct(product);
+    modalRef.current.showModal();
+  };
+
+  const handleUpdate = async (data) => {
+    const images = Array.from(data.images);
+    const videos = Array.from(data.demoVideo);
+    const image_URL_API = `https://api.imgbb.com/1/upload?key=${
+      import.meta.env.VITE_IMAGE_HOST
+    }`;
+    const video_URL_API = `https://api.imgbb.com/1/upload?key=${
+      import.meta.env.VITE_IMAGE_HOST
+    }`;
+
+    let imageURLs = [];
+    let videoURLs = [];
+
+    for (let i = 0; i < images.length; i++) {
+      const formData = new FormData();
+      formData.append("image", images[i]);
+
+      const res = await axios.post(image_URL_API, formData);
+      imageURLs.push(res.data.data.url);
+    }
+    for (let i = 0; i < videos.length; i++) {
+      const formData = new FormData();
+      formData.append("image", videos[i]);
+
+      const res = await axios.post(video_URL_API, formData);
+      videoURLs.push(res.data.data.url);
+    }
+
+    const updatedInfo = {
+      name: data.name,
+      description: data.description,
+      category: data.category,
+      images: imageURLs,
+      demoVideo: videoURLs,
+      payment_option: data.paymentOption,
+    };
+    console.log(updatedInfo);
+
+    const res = await axiosSecure.patch(
+      `/updateProduct/${selectedProduct._id}`,
+      updatedInfo
+    );
+    if (res.data.modifiedCount) {
+      refetch();
+      modalRef.current.close();
+      reset();
+      Swal.fire({
+        title: "Info Updated",
+        icon: "success",
+      });
+    }
+  };
+
   const handleShowOnHome = (product) => {
-    console.log(product);
     axiosSecure.patch(`/show-on-home/${product._id}`, product).then((res) => {
       if (res.data.modifiedCount) {
         refetch();
@@ -25,55 +96,232 @@ const AllProducts = () => {
 
   return (
     <div>
-      <h2 className="text-4xl font-bold text-center py-12">All Products</h2>
-      <div className="overflow-x-auto">
-        <table className="table">
-          {/* head */}
-          <thead>
-            <tr>
-              <th></th>
-              <th>Name</th>
-              <th>Price</th>
-              <th>Category</th>
-              <th>Created At</th>
-              <th>Show on home</th>
-            </tr>
-          </thead>
-          <tbody>
-            {products.map((product) => (
-              <tr key={product._id}>
-                <td>
-                  <div className="flex items-center gap-3">
-                    <div className="avatar">
-                      <div className="mask mask-squircle h-12 w-12">
-                        <img src={product.image[0]} />
+      <h2 className="text-4xl font-bold text-center py-12">
+        All Products: {products.length}
+      </h2>
+      <div className="hidden md:block">
+        {/* Large Screen Table */}
+        <table className="table w-full">
+          <div className="overflow-x-auto">
+            <table className="table">
+              {/* head */}
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>Name</th>
+                  <th>Price</th>
+                  <th>Category</th>
+                  <th>Created At</th>
+                  <th>Show on home</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {products.map((product) => (
+                  <tr key={product._id}>
+                    <td>
+                      <div className="flex items-center gap-3">
+                        <div className="avatar">
+                          <div className="mask mask-squircle h-12 w-12">
+                            <img src={product.image} />
+                          </div>
+                        </div>
+                        <div>
+                          <div className="font-bold"></div>
+                          <div className="text-sm opacity-50"></div>
+                        </div>
                       </div>
-                    </div>
-                    <div>
-                      <div className="font-bold"></div>
-                      <div className="text-sm opacity-50"></div>
-                    </div>
-                  </div>
-                </td>
-                <td>{product.name}</td>
-                <td>{product.price}</td>
-                <td>{product.category}</td>
-                <td>{new Date(product.createdAt).toLocaleString()}</td>
-                <td>
-                  <input
-                    checked={
-                      product.show_on_home === true ||
-                      product.show_on_home === "true"
-                    }
-                    onChange={() => handleShowOnHome(product)}
-                    type="checkbox"
-                    className="checkbox checkbox-warning"
-                  />
-                </td>
-              </tr>
-            ))}
-          </tbody>
+                    </td>
+                    <td>{product.name}</td>
+                    <td>{product.price}</td>
+                    <td>{product.category}</td>
+                    <td>{new Date(product.createdAt).toLocaleString()}</td>
+                    <td>
+                      <input
+                        checked={
+                          product.show_on_home === true ||
+                          product.show_on_home === "true"
+                        }
+                        onChange={() => handleShowOnHome(product)}
+                        type="checkbox"
+                        className="checkbox checkbox-warning"
+                      />
+                    </td>
+                    <td>
+                      <button
+                        onClick={() => handleShowModal(product)}
+                        className="btn bg-[#40826D] text-white border-none hover:cursor-pointer">
+                        Update
+                      </button>
+
+                      <button className="btn bg-[#CD5C5C] text-white border-none ml-1 hover:cursor-pointerF">
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </table>
+      </div>
+
+      {/* Modal */}
+      <dialog ref={modalRef} className="modal modal-bottom sm:modal-middle">
+        <div className="modal-box">
+          <h2 className="text-2xl font-bold text-center mb-2">Update</h2>
+          {/* Table */}
+          <div className="max-w-10/12 mx-auto">
+            <form
+              onSubmit={handleSubmit(handleUpdate)}
+              className="grid grid-cols-1 md:grid-cols-2 gap-10">
+              <div>
+                <fieldset className="fieldset flex-1">
+                  {/* Products Name */}
+                  <label className="font-bold text-md">Product Name</label>
+                  <input
+                    type="text"
+                    {...register("name")}
+                    className="input w-full mb-4 bg-white"
+                    placeholder="Name"
+                  />
+
+                  {/* Category */}
+                  <label className="font-bold text-md">Category</label>
+                  <select
+                    {...register("category")}
+                    defaultValue="Select a category"
+                    className="select w-full mb-4  bg-white">
+                    <option disabled={true}>Select a category</option>
+                    <option>Shirt</option>
+                    <option>Pant</option>
+                    <option>Jacket</option>
+                    <option>Accessories</option>
+                  </select>
+
+                  {/* Price */}
+                  <label className="font-bold text-md">Price</label>
+                  <input
+                    type="number"
+                    {...register("price")}
+                    className="input w-full mb-4  bg-white"
+                    placeholder="price"
+                  />
+
+                  {/* Product Description */}
+                  <label className="font-bold text-md">
+                    Product Description
+                  </label>
+                  <textarea
+                    {...register("description")}
+                    className="border border-[#d1d1d1] p-1 rounded-md mb-4 bg-white"
+                    rows="6"
+                    placeholder="Description"></textarea>
+                </fieldset>
+              </div>
+
+              <div>
+                <fieldset className="fieldset flex-1">
+                  {/* Product Image */}
+                  <label className="font-bold text-md">Image</label>
+                  <p className="text-[10px] text-gray-500">
+                    Select image pressing 'Ctrl' button.
+                  </p>
+                  <input
+                    type="file"
+                    {...register("images")}
+                    multiple={true}
+                    onChange={(e) => handlePreview(e)}
+                    className="file-input w-full mb-4"
+                    placeholder="photo"
+                  />
+
+                  <div className="flex flex-wrap gap-4">
+                    {previews.map((src, index) => (
+                      <img
+                        key={index}
+                        src={src}
+                        onClick={() => window.open(src, "_blank")}
+                        className="w-32 h-32 object-cover rounded-md border cursor-pointer"
+                      />
+                    ))}
+                  </div>
+
+                  {/* Demo Video */}
+                  <label className="font-bold text-md">Demo Video</label>
+                  <input
+                    type="file"
+                    {...register("demoVideo")}
+                    className="file-input w-full mb-4  bg-white"
+                    placeholder="Video"
+                  />
+
+                  {/* Payment Options */}
+                  <label className="font-bold text-md">Payment Options</label>
+                  <select
+                    {...register("paymentOption")}
+                    defaultValue="Select a option"
+                    className="select w-full mb-4  bg-white">
+                    <option disabled={true}>Select a option</option>
+                    <option>Cash on Delivery</option>
+                    <option>PayFast</option>
+                  </select>
+                </fieldset>
+              </div>
+              <button className="btn btn-primary text-black">Submit</button>
+            </form>
+          </div>
+
+          <div className="modal-action">
+            <form method="dialog">
+              {/* if there is a button in form, it will close the modal */}
+              <button className="btn">Close</button>
+            </form>
+          </div>
+        </div>
+      </dialog>
+
+      {/* Responsive Cards */}
+      <div className="md:hidden space-y-4">
+        {products.map((product) => (
+          <div
+            key={product._id}
+            className="p-4 border rounded-lg shadow-sm bg-base-100">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="avatar">
+                <div className="mask mask-squircle h-14 w-14">
+                  <img src={product.image[0]} />
+                </div>
+              </div>
+              <h3 className="font-semibold">{product.name}</h3>
+            </div>
+
+            <p>
+              <span className="font-semibold">Price:</span> {product.price}
+            </p>
+            <p>
+              <span className="font-semibold">Category:</span>{" "}
+              {product.category}
+            </p>
+            <p>
+              <span className="font-semibold">Created:</span>{" "}
+              {new Date(product.createdAt).toLocaleString()}
+            </p>
+
+            <div className="mt-2 flex items-center gap-2">
+              <span className="font-semibold">Show on Home:</span>
+              <input
+                checked={
+                  product.show_on_home === true ||
+                  product.show_on_home === "true"
+                }
+                onChange={() => handleShowOnHome(product)}
+                type="checkbox"
+                className="checkbox checkbox-warning"
+              />
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );

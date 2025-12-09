@@ -13,7 +13,6 @@ const ManageUser = () => {
   const { role } = useRole();
   const { register, handleSubmit } = useForm();
   const [selectedUser, setSelectedUser] = useState(null);
-  console.log(selectedUser);
 
   const { data: users = [], refetch } = useQuery({
     queryKey: ["users"],

@@ -81,7 +81,7 @@ const ProductDetails = () => {
               <div>
                 <button
                   disabled={role !== "Buyer"}
-                  className="w-full py-3 rounded-xl bg-primary hover:cursor-pointer disabled:bg-primary/50 disabled:hover:cursor-not-allowed text-black font-semibold text-lg hover:bg-yellow-500 low transition">
+                  className="w-full py-3 rounded-xl bg-primary hover:cursor-pointer disabled:bg-primary/50 disabled:hover:cursor-not-allowed disabled:text-black/30 text-black font-semibold text-lg hover:bg-yellow-500 low transition">
                   Order / Book Now
                 </button>
               </div>
