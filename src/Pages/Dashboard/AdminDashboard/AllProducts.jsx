@@ -35,59 +35,66 @@ const AllProducts = () => {
   };
 
   const handleUpdate = async (data) => {
-    setLoading(true);
-    const images = Array.from(data.images);
-    const videos = Array.from(data.demoVideo);
-    const image_URL_API = `https://api.imgbb.com/1/upload?key=${
-      import.meta.env.VITE_IMAGE_HOST
-    }`;
-    const video_URL_API = `https://api.imgbb.com/1/upload?key=${
-      import.meta.env.VITE_IMAGE_HOST
-    }`;
+    try {
+      setLoading(true);
+      const images = Array.from(data.images);
+      const videos = Array.from(data.demoVideo);
+      const image_URL_API = `https://api.imgbb.com/1/upload?key=${
+        import.meta.env.VITE_IMAGE_HOST
+      }`;
+      const video_URL_API = `https://api.imgbb.com/1/upload?key=${
+        import.meta.env.VITE_IMAGE_HOST
+      }`;
 
-    let imageURLs = [];
-    let videoURLs = [];
+      let imageURLs = [];
+      let videoURLs = [];
 
-    for (let i = 0; i < images.length; i++) {
-      const formData = new FormData();
-      formData.append("image", images[i]);
+      for (let i = 0; i < images.length; i++) {
+        const formData = new FormData();
+        formData.append("image", images[i]);
 
-      const res = await axios.post(image_URL_API, formData);
-      imageURLs.push(res.data.data.url);
-    }
-    for (let i = 0; i < videos.length; i++) {
-      const formData = new FormData();
-      formData.append("image", videos[i]);
+        const res = await axios.post(image_URL_API, formData);
+        imageURLs.push(res.data.data.url);
+      }
+      for (let i = 0; i < videos.length; i++) {
+        const formData = new FormData();
+        formData.append("video", videos[i]);
 
-      const res = await axios.post(video_URL_API, formData);
-      videoURLs.push(res.data.data.url);
-    }
-    console.log(imageURLs);
+        const res = await axios.post(video_URL_API, formData);
+        videoURLs.push(res.data.data.url);
+      }
+      console.log(imageURLs);
 
-    const updatedInfo = {
-      name: data.name,
-      description: data.description,
-      category: data.category,
-      images: imageURLs,
-      demoVideo: videoURLs,
-      payment_option: data.paymentOption,
-    };
-    console.log(updatedInfo);
+      const updatedInfo = {
+        name: data.name,
+        description: data.description,
+        category: data.category,
+        image: imageURLs,
+        demo_video: videoURLs,
+        payment_option: data.paymentOption,
+      };
+      console.log(updatedInfo);
 
-    const res = await axiosSecure.patch(
-      `/updateProduct/${selectedProduct._id}`,
-      updatedInfo
-    );
-    if (res.data.modifiedCount) {
+      const res = await axiosSecure.patch(
+        `/updateProduct/${selectedProduct._id}`,
+        updatedInfo
+      );
+      if (res.data.modifiedCount) {
+        setLoading(false);
+        refetch();
+        reset();
+        setPreviews([]);
+        Swal.fire({
+          title: "Info Updated",
+          icon: "success",
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      Swal.fire({ title: "Something went wrong", icon: "error" });
+    } finally {
       setLoading(false);
-      refetch();
       modalRef.current.close();
-      reset();
-      setPreviews([]);
-      Swal.fire({
-        title: "Info Updated",
-        icon: "success",
-      });
     }
   };
 
@@ -119,20 +126,14 @@ const AllProducts = () => {
     axiosSecure.patch(`/show-on-home/${product._id}`, product).then((res) => {
       if (res.data.modifiedCount) {
         refetch();
-        console.log("updated");
       }
     });
-  };
-
-  const handleSubmitBtn = () => {
-    modalRef.current.close();
-    reset();
   };
 
   return (
     <div>
       {loading && (
-        <div className="absolute h-screen inset-0 bg-white/50 flex items-center justify-center z-50 rounded-lg backdrop:bg-none">
+        <div className="fixed h-screen inset-0 bg-white/50 flex items-center justify-center z-50 rounded-lg backdrop:bg-none">
           <LoadingSpinner />
         </div>
       )}
@@ -213,6 +214,11 @@ const AllProducts = () => {
       </div>
 
       {/* Modal */}
+      {loading && (
+        <div className="fixed h-screen inset-0 bg-white/50 flex items-center justify-center z-50 rounded-lg backdrop:bg-none">
+          <LoadingSpinner />
+        </div>
+      )}
       <dialog ref={modalRef} className="modal modal-bottom sm:modal-middle">
         <div className="modal-box">
           <h2 className="text-2xl font-bold text-center mb-2">Update</h2>
@@ -314,9 +320,7 @@ const AllProducts = () => {
                   </select>
                 </fieldset>
               </div>
-              <button
-                onClick={handleSubmitBtn}
-                className="btn btn-primary text-black">
+              <button type="submit" className="btn btn-primary text-black">
                 Submit
               </button>
             </form>

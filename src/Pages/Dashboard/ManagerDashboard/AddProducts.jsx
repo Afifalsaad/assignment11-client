@@ -53,6 +53,8 @@ const AddProducts = () => {
     };
     axiosSecure.post("/products", productDetails).then((res) => {
       if (res.data.insertedId) {
+        setLoading(false);
+        setPreviews([]);
         reset();
         Swal.fire({
           title: "Product Added Successfully",
@@ -60,11 +62,15 @@ const AddProducts = () => {
         });
       }
     });
-    setLoading(false);
   };
 
   return (
     <div>
+      {loading && (
+        <div className="fixed h-screen inset-0 bg-white/50 flex items-center justify-center z-50 rounded-lg backdrop:bg-none">
+          <LoadingSpinner />
+        </div>
+      )}
       <h2 className="text-4xl font-bold text-center mb-12">Add Products</h2>
 
       {/* Table */}
