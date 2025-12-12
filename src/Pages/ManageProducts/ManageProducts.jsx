@@ -1,39 +1,40 @@
-import { useQuery } from "@tanstack/react-query";
 import React, { useRef, useState } from "react";
-import useAxiosSecure from "../../../Hooks/useAxiosSecure";
+import useAxiosSecure from "../../Hooks/useAxiosSecure";
+import { useQuery } from "@tanstack/react-query";
+import useAuth from "../../Hooks/useAuth";
 import { useForm } from "react-hook-form";
-import axios from "axios";
 import Swal from "sweetalert2";
-import LoadingSpinner from "../../Loading/Loading";
-import useRole from "../../../Hooks/useRole";
+import axios from "axios";
+import LoadingSpinner from "../Loading/Loading";
+import useRole from "../../Hooks/useRole";
 
-const AllProducts = () => {
+const ManageProducts = () => {
+  const { user } = useAuth();
   const { role } = useRole();
+  console.log(role);
   const axiosSecure = useAxiosSecure();
-  const modalRef = useRef();
-  const [selectedProduct, setSelectedProduct] = useState(null);
-  const [previews, setPreviews] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [previews, setPreviews] = useState([]);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const modalRef = useRef();
 
   const { register, handleSubmit, reset } = useForm();
   const { data: products = [], refetch } = useQuery({
-    queryKey: [],
+    queryKey: [user?.email],
     queryFn: async () => {
-      const res = await axiosSecure.get("/all-products");
-      console.log(res.data.result);
-      return res.data.result;
+      const res = await axiosSecure.get(`/my-products?email=${user.email}`);
+      return res.data;
     },
   });
 
+  const openModal = (product) => {
+    setSelectedProduct(product);
+    modalRef.current.showModal();
+  };
   const handlePreview = (e) => {
     const files = Array.from(e.target.files);
     const urls = files.map((file) => URL.createObjectURL(file));
     setPreviews((prev) => [...prev, ...urls]);
-  };
-
-  const handleShowModal = (product) => {
-    setSelectedProduct(product);
-    modalRef.current.showModal();
   };
 
   const handleUpdate = async (data) => {
@@ -83,8 +84,8 @@ const AllProducts = () => {
       if (res.data.modifiedCount) {
         setLoading(false);
         refetch();
-        reset();
         setPreviews([]);
+        reset();
         Swal.fire({
           title: "Info Updated",
           icon: "success",
@@ -122,14 +123,6 @@ const AllProducts = () => {
     });
   };
 
-  const handleShowOnHome = (product) => {
-    axiosSecure.patch(`/show-on-home/${product._id}`, product).then((res) => {
-      if (res.data.modifiedCount) {
-        refetch();
-      }
-    });
-  };
-
   return (
     <div>
       {loading && (
@@ -137,83 +130,57 @@ const AllProducts = () => {
           <LoadingSpinner />
         </div>
       )}
-      <h2 className="text-4xl font-bold text-center py-12">
-        All Products: {products.length}
+      <h2 className="text-4xl font-bold text-center">
+        Manage Products: {products.length}
       </h2>
-      <div className="hidden md:block">
-        {/* Large Screen Table */}
-        <table className="table w-full">
-          <div className="overflow-x-auto">
-            <table className="table">
-              {/* head */}
-              <thead>
-                <tr>
-                  <th></th>
-                  <th>Name</th>
-                  <th>Price</th>
-                  <th>Category</th>
-                  <th>Created At</th>
-                  <th>Show on home</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {products.map((product) => (
-                  <tr key={product._id}>
-                    <td>
-                      <div className="flex items-center gap-3">
-                        <div className="avatar">
-                          <div className="mask mask-squircle h-12 w-12">
-                            <img
-                              src={product.image?.[0]}
-                              alt={product.name}
-                              className="w-full h-full object-cover"
-                            />
-                          </div>
-                        </div>
-                        <div>
-                          <div className="font-bold"></div>
-                          <div className="text-sm opacity-50"></div>
-                        </div>
-                      </div>
-                    </td>
-                    <td>{product.name}</td>
-                    <td>{product.price}</td>
-                    <td>{product.category}</td>
-                    <td>{new Date(product.createdAt).toLocaleString()}</td>
-                    <td>
-                      <input
-                        checked={
-                          product.show_on_home === true ||
-                          product.show_on_home === "true"
-                        }
-                        onChange={() => handleShowOnHome(product)}
-                        type="checkbox"
-                        className="checkbox checkbox-warning"
-                      />
-                    </td>
-                    <td>
-                      <button
-                        onClick={() => handleShowModal(product)}
-                        className="btn bg-[#40826D] text-white border-none hover:cursor-pointer">
-                        Update
-                      </button>
 
-                      <button
-                        onClick={() => handleDelete(product)}
-                        className="btn bg-[#CD5C5C] text-white border-none ml-1 hover:cursor-pointerF">
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+      {/* Table */}
+      <div className="overflow-x-auto">
+        <table className="table">
+          {/* head */}
+          <thead>
+            <tr>
+              <th>Image</th>
+              <th>Name</th>
+              <th>Price</th>
+              <th>Payment Mode</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {products.map((product) => (
+              <tr key={product._id}>
+                <td>
+                  <div className="flex items-center gap-3">
+                    <div className="avatar">
+                      <div className="mask mask-squircle h-12 w-12">
+                        <img src={product.image[0]} />
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td>{product.name}</td>
+                <td>{product.price}</td>
+                <td>{product.payment_status}</td>
+                <th>
+                  <button
+                    onClick={() => openModal(product)}
+                    className="btn bg-[#40826D] text-white border-none hover:cursor-pointer">
+                    Update
+                  </button>
+
+                  <button
+                    onClick={() => handleDelete(product)}
+                    className="btn bg-[#CD5C5C] text-white border-none ml-1 hover:cursor-pointerF">
+                    Delete
+                  </button>
+                </th>
+              </tr>
+            ))}
+          </tbody>
         </table>
       </div>
 
-      {/* Modal */}
       <dialog ref={modalRef} className="modal modal-bottom sm:modal-middle">
         <div className="modal-box">
           <h2 className="text-2xl font-bold text-center mb-2">Update</h2>
@@ -329,51 +296,8 @@ const AllProducts = () => {
           </div>
         </div>
       </dialog>
-
-      {/* Responsive Cards */}
-      <div className="md:hidden space-y-4">
-        {products.map((product) => (
-          <div
-            key={product._id}
-            className="p-4 border rounded-lg shadow-sm bg-base-100">
-            <div className="flex items-center gap-3 mb-3">
-              <div className="avatar">
-                <div className="mask mask-squircle h-14 w-14">
-                  <img src={product.image?.[0]} />
-                </div>
-              </div>
-              <h3 className="font-semibold">{product.name}</h3>
-            </div>
-
-            <p>
-              <span className="font-semibold">Price:</span> {product.price}
-            </p>
-            <p>
-              <span className="font-semibold">Category:</span>{" "}
-              {product.category}
-            </p>
-            <p>
-              <span className="font-semibold">Created:</span>{" "}
-              {new Date(product.createdAt).toLocaleString()}
-            </p>
-
-            <div className="mt-2 flex items-center gap-2">
-              <span className="font-semibold">Show on Home:</span>
-              <input
-                checked={
-                  product.show_on_home === true ||
-                  product.show_on_home === "true"
-                }
-                onChange={() => handleShowOnHome(product)}
-                type="checkbox"
-                className="checkbox checkbox-warning"
-              />
-            </div>
-          </div>
-        ))}
-      </div>
     </div>
   );
 };
 
-export default AllProducts;
+export default ManageProducts;

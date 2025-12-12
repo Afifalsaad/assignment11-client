@@ -11,6 +11,7 @@ const ManageUser = () => {
   const { user: loggedInUser } = useAuth();
   const modalRef = useRef();
   const { role } = useRole();
+  console.log(role);
   const { register, handleSubmit } = useForm();
   const [selectedUser, setSelectedUser] = useState(null);
 
@@ -32,6 +33,7 @@ const ManageUser = () => {
       .post(`/suspend/${selectedUser._id}`, reason)
       .then((res) => {
         if (res.data.insertedId) {
+          modalRef.current.close();
           refetch();
           console.log(res.data);
         }
@@ -112,7 +114,7 @@ const ManageUser = () => {
                   ""
                 ) : (
                   <td>
-                    {role === "Manager" ? (
+                    {user.role === "Manager" ? (
                       <button
                         disabled={true}
                         className="btn bg-[#98bbb0] hover:cursor-not-allowed text-white border-none">

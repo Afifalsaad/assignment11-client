@@ -17,6 +17,8 @@ import MyOrders from "../Pages/Dashboard/MyOrders/MyOrders";
 import PaymentSuccessful from "../Pages/Dashboard/Payments/PaymentSuccessful";
 import PaymentCanceled from "../Pages/Dashboard/Payments/PaymentCanceled";
 import AdminRoute from "./AdminRoute";
+import ManageProducts from "../Pages/ManageProducts/ManageProducts";
+import ManagerRoute from "./ManagerRoute";
 
 export const router = createBrowserRouter([
   {
@@ -115,11 +117,33 @@ export const router = createBrowserRouter([
       },
       {
         path: "all-orders",
-        Component: AllOrders,
+        element: (
+          <PrivateRoute>
+            <AdminRoute>
+              <AllOrders></AllOrders>
+            </AdminRoute>
+          </PrivateRoute>
+        ),
       },
       {
         path: "add-products",
-        Component: AddProducts,
+        element: (
+          <PrivateRoute>
+            <ManagerRoute>
+              <AddProducts></AddProducts>
+            </ManagerRoute>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "manage-products",
+        element: (
+          <PrivateRoute>
+            <ManagerRoute>
+              <ManageProducts></ManageProducts>
+            </ManagerRoute>
+          </PrivateRoute>
+        ),
       },
     ],
   },

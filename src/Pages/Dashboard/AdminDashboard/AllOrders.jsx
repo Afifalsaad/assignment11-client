@@ -1,8 +1,11 @@
 import React, { useRef, useState } from "react";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
+import useAuth from "../../../Hooks/useAuth";
 
 const AllOrders = () => {
+  const { user } = useAuth();
+  console.log(user);
   const axiosSecure = useAxiosSecure();
   const modalRef = useRef();
   const [selectedOrder, setSelectedOrder] = useState();

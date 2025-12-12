@@ -50,6 +50,7 @@ const AddProducts = () => {
       image: imageURLs,
       demo_video: data.demoVideo,
       payment_option: data.paymentOption,
+      payment_status: 'pending'
     };
     axiosSecure.post("/products", productDetails).then((res) => {
       if (res.data.insertedId) {

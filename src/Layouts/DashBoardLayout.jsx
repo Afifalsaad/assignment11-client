@@ -5,8 +5,13 @@ import { FaJediOrder, FaShoppingCart, FaUsersCog } from "react-icons/fa";
 import { AiFillProduct } from "react-icons/ai";
 import { MdBorderColor } from "react-icons/md";
 import { IoMdAddCircle } from "react-icons/io";
+import useRole from "../Hooks/useRole";
+import { IoSettings } from "react-icons/io5";
 
 const DashBoardLayout = () => {
+  const { role } = useRole();
+  console.log(role);
+
   return (
     <div>
       <Navbar></Navbar>
@@ -73,7 +78,6 @@ const DashBoardLayout = () => {
                   </button>
                 </li>
               </Link>
-
               {/* List item */}
               {/* My Orders */}
               <Link to="/dashboard/my-orders">
@@ -87,59 +91,98 @@ const DashBoardLayout = () => {
                   </button>
                 </li>
               </Link>
-
               {/* Manage User */}
-              <Link to="/dashboard/manage-user">
-                <li>
-                  <button
-                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                    data-tip="manage user">
-                    {/* Icon */}
-                    <FaUsersCog />
-                    <span className="is-drawer-close:hidden">Manage Users</span>
-                  </button>
-                </li>
-              </Link>
+              {role === "admin" && (
+                <>
+                  <Link to="/dashboard/manage-user">
+                    <li>
+                      <button
+                        className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                        data-tip="manage user">
+                        {/* Icon */}
+                        <FaUsersCog />
+                        <span className="is-drawer-close:hidden">
+                          Manage Users
+                        </span>
+                      </button>
+                    </li>
+                  </Link>
+                </>
+              )}
 
               {/* All Products */}
-              <Link to="/dashboard/all-products-admin">
-                <li>
-                  <button
-                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                    data-tip="all products">
-                    {/* Icon */}
-                    <AiFillProduct />
-                    <span className="is-drawer-close:hidden">All Products</span>
-                  </button>
-                </li>
-              </Link>
-
+              {role === "admin" && (
+                <>
+                  <Link to="/dashboard/all-products-admin">
+                    <li>
+                      <button
+                        className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                        data-tip="all products">
+                        {/* Icon */}
+                        <AiFillProduct />
+                        <span className="is-drawer-close:hidden">
+                          All Products
+                        </span>
+                      </button>
+                    </li>
+                  </Link>
+                </>
+              )}
               {/* All Orders */}
-              <Link to="/dashboard/all-orders">
-                <li>
-                  <button
-                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                    data-tip="all orders">
-                    {/* Icon */}
-                    <MdBorderColor />
-                    <span className="is-drawer-close:hidden">All Orders</span>
-                  </button>
-                </li>
-              </Link>
-
+              {role === "admin" && (
+                <>
+                  <Link to="/dashboard/all-orders">
+                    <li>
+                      <button
+                        className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                        data-tip="all orders">
+                        {/* Icon */}
+                        <MdBorderColor />
+                        <span className="is-drawer-close:hidden">
+                          All Orders
+                        </span>
+                      </button>
+                    </li>
+                  </Link>
+                </>
+              )}
               {/* --------------- Manager Only Routes */}
               {/* Add Products */}
-              <Link to="/dashboard/add-products">
-                <li>
-                  <button
-                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                    data-tip="add products">
-                    {/* Icon */}
-                    <IoMdAddCircle />
-                    <span className="is-drawer-close:hidden">Add Products</span>
-                  </button>
-                </li>
-              </Link>
+              {role === "Manager" && (
+                <>
+                  <Link to="/dashboard/add-products">
+                    <li>
+                      <button
+                        className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                        data-tip="add products">
+                        {/* Icon */}
+                        <IoMdAddCircle />
+                        <span className="is-drawer-close:hidden">
+                          Add Products
+                        </span>
+                      </button>
+                    </li>
+                  </Link>
+                </>
+              )}
+              {/* Manage Products */}
+              {role === "Manager" && (
+                <>
+                  <Link to="/dashboard/manage-products">
+                    <li>
+                      <button
+                        className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                        data-tip="manage products">
+                        {/* Icon */}
+                        <IoSettings />
+                        <span className="is-drawer-close:hidden">
+                          Manage Products
+                        </span>
+                      </button>
+                    </li>
+                  </Link>
+                </>
+              )}
             </ul>
           </div>
         </div>
