@@ -19,6 +19,7 @@ const ApprovedOrders = () => {
       const res = await axiosSecure.get(
         `approved-order?email=${user?.email}&status=approved`
       );
+      console.log(products);
       return res.data;
     },
   });
@@ -33,6 +34,7 @@ const ApprovedOrders = () => {
       location: data.location,
       date_time: new Date(data.date_time),
       status: data.status,
+      trackingId: selectedProduct.trackingId,
     };
     axiosSecure
       .patch(`/tracking-log/${selectedProduct._id}`, approvedInfo)

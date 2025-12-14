@@ -22,6 +22,7 @@ const MyOrders = () => {
       title: order.title,
       id: order._id,
       email: order.email,
+      trackingId: order.trackingId,
     };
 
     const res = await axiosSecure.post(

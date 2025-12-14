@@ -15,20 +15,26 @@ const PendingOrders = () => {
       const res = await axiosSecure.get(
         `/pending-orders?email=${user?.email}&status=pending`
       );
+      console.log(orders);
       return res.data;
     },
   });
 
   const approveOrder = (order) => {
-    axiosSecure.patch(`approve-order/${order._id}`).then((res) => {
-      if (res.data.modifiedCount) {
-        refetch();
-        Swal.fire({
-          title: "Approved",
-          icon: "success",
-        });
-      }
-    });
+    const approvedInfo = {
+      trackingId: order.trackingId,
+    };
+    axiosSecure
+      .patch(`approve-order/${order._id}`, approvedInfo)
+      .then((res) => {
+        if (res.data.modifiedCount) {
+          refetch();
+          Swal.fire({
+            title: "Approved",
+            icon: "success",
+          });
+        }
+      });
   };
 
   const rejectOrder = (order) => {
@@ -55,7 +61,6 @@ const PendingOrders = () => {
           {/* head */}
           <thead>
             <tr>
-              <th></th>
               <th>Order ID</th>
               <th>User</th>
               <th>Product</th>
@@ -65,14 +70,13 @@ const PendingOrders = () => {
             </tr>
           </thead>
           <tbody>
-            {orders.map((order, index) => (
+            {orders.map((order) => (
               <tr key={order._id}>
-                <th key={index + 1}>1</th>
                 <td>{order.id}</td>
                 <td>{order.email}</td>
                 <td>{order.title}</td>
                 <td>{order.order_quantity}</td>
-                <td>{new Date(order.orderedAt).toLocaleString()}</td>
+                <td>{new Date(order.orderedAt).toLocaleDateString()}</td>
                 <td>
                   <button
                     onClick={() => approveOrder(order)}
