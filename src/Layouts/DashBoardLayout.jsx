@@ -1,7 +1,7 @@
 import React from "react";
 import Navbar from "../Components/Home/Navbar/Navbar";
 import { Link, Outlet } from "react-router";
-import { FaJediOrder, FaShoppingCart, FaUsersCog } from "react-icons/fa";
+import { FaJediOrder, FaRegUser, FaShoppingCart, FaUsersCog } from "react-icons/fa";
 import { AiFillProduct } from "react-icons/ai";
 import { MdBorderColor, MdOutlinePendingActions } from "react-icons/md";
 import { IoMdAddCircle } from "react-icons/io";
@@ -146,7 +146,7 @@ const DashBoardLayout = () => {
                   </Link>
                 </>
               )}
-              {/* --------------- Manager Only Routes */}
+              {/* Manager Only Routes */}
               {/* Add Products */}
               {role === "Manager" && (
                 <>
@@ -219,6 +219,20 @@ const DashBoardLayout = () => {
                   </Link>
                 </>
               )}
+              {/* Profile */}
+              <Link to="/my-profile">
+                <li>
+                  <button
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                    data-tip="my profile">
+                    {/* Icon */}
+                    <FaRegUser />
+                    <span className="is-drawer-close:hidden">
+                      My Profile
+                    </span>
+                  </button>
+                </li>
+              </Link>
             </ul>
           </div>
         </div>

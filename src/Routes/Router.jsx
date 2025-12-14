@@ -22,6 +22,7 @@ import ManagerRoute from "./ManagerRoute";
 import PendingOrders from "../Pages/PendingOrders/PendingOrders";
 import ApprovedOrders from "../Pages/ApprovedOrders/ApprovedOrders";
 import TrackingsLog from "../Pages/TrackingsLog/TrackingsLog";
+import Profile from "../Pages/Profile/Profile";
 
 export const router = createBrowserRouter([
   {
@@ -47,6 +48,14 @@ export const router = createBrowserRouter([
       {
         path: "/trackings-log/:trackingId",
         Component: TrackingsLog,
+      },
+      {
+        path: "/my-profile",
+        element: (
+          <PrivateRoute>
+            <Profile></Profile>
+          </PrivateRoute>
+        ),
       },
       {
         path: "/productDetails/:id",

@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 
 const MyOrders = () => {
   const { user } = useAuth();
+  console.log(user)
   const axiosSecure = useAxiosSecure();
 
   const { data: orders = [] } = useQuery({
