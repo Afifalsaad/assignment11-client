@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Navbar from "../Components/Home/Navbar/Navbar";
-import { Link, Outlet } from "react-router";
-import { FaJediOrder, FaRegUser, FaShoppingCart, FaUsersCog } from "react-icons/fa";
+import { Link, Outlet, useLocation } from "react-router";
+import { FaRegUser, FaShoppingCart, FaUsersCog } from "react-icons/fa";
 import { AiFillProduct } from "react-icons/ai";
 import { MdBorderColor, MdOutlinePendingActions } from "react-icons/md";
 import { IoMdAddCircle } from "react-icons/io";
@@ -12,6 +12,36 @@ import { FaTruckFast } from "react-icons/fa6";
 
 const DashBoardLayout = () => {
   const { role } = useRole();
+  const location = useLocation();
+  useEffect(() => {
+    const path = location.pathname;
+
+    if (path === "/dashboard") {
+      document.title = "DashBoard";
+    } else if (path.startsWith("/dashboard/track-order")) {
+      document.title = "Track Order";
+    } else if (path === "/dashboard/my-orders") {
+      document.title = "My Orders";
+    } else if (path === "/dashboard/payment-success") {
+      document.title = "Payment Success";
+    } else if (path === "/dashboard/payment-cancelled") {
+      document.title = "Payment Cancelled";
+    } else if (path === "/dashboard/manage-user") {
+      document.title = "Manage user";
+    } else if (path === "/dashboard/all-products-admin") {
+      document.title = "All Products";
+    } else if (path === "/dashboard/all-orders") {
+      document.title = "All Orders";
+    } else if (path === "/dashboard/add-products") {
+      document.title = "Add Products";
+    } else if (path === "/dashboard/manage-products") {
+      document.title = "Manage Products";
+    } else if (path === "/dashboard/pending-orders") {
+      document.title = "Pending Orders";
+    } else if (path === "/dashboard/approved-orders") {
+      document.title = "Approved Orders";
+    }
+  }, [location.pathname]);
 
   return (
     <div>
@@ -80,18 +110,6 @@ const DashBoardLayout = () => {
                 </li>
               </Link>
               {/* List item */}
-              {/* My Orders */}
-              <Link to="/dashboard/my-orders">
-                <li>
-                  <button
-                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                    data-tip="My Orders">
-                    {/* Icon */}
-                    <FaShoppingCart />
-                    <span className="is-drawer-close:hidden">My Orders</span>
-                  </button>
-                </li>
-              </Link>
               {/* Manage User */}
               {role === "admin" && (
                 <>
@@ -220,20 +238,37 @@ const DashBoardLayout = () => {
                   </Link>
                 </>
               )}
+              {/* Buyer Only */}
+              {/* My Orders */}
+              {role === "Buyer" && (
+                <Link to="/dashboard/my-orders">
+                  <li>
+                    <button
+                      className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                      data-tip="My Orders">
+                      {/* Icon */}
+                      <FaShoppingCart />
+                      <span className="is-drawer-close:hidden">My Orders</span>
+                    </button>
+                  </li>
+                </Link>
+              )}
               {/* Track Order */}
-              <Link to="track-order">
-                <li>
-                  <button
-                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                    data-tip="track order">
-                    {/* Icon */}
-                    <FaTruckFast />
-                    <span className="is-drawer-close:hidden">
-                      Track Order
-                    </span>
-                  </button>
-                </li>
-              </Link>
+              {role === "Buyer" && (
+                <Link to="track-order">
+                  <li>
+                    <button
+                      className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                      data-tip="track order">
+                      {/* Icon */}
+                      <FaTruckFast />
+                      <span className="is-drawer-close:hidden">
+                        Track Order
+                      </span>
+                    </button>
+                  </li>
+                </Link>
+              )}
               {/* Profile */}
               <Link to="/my-profile">
                 <li>
@@ -242,9 +277,7 @@ const DashBoardLayout = () => {
                     data-tip="my profile">
                     {/* Icon */}
                     <FaRegUser />
-                    <span className="is-drawer-close:hidden">
-                      My Profile
-                    </span>
+                    <span className="is-drawer-close:hidden">My Profile</span>
                   </button>
                 </li>
               </Link>

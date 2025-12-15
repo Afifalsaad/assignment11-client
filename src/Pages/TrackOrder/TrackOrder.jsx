@@ -18,9 +18,9 @@ const TrackOrder = () => {
   });
   return (
     <div>
-      <h2 className="text-4xl font-bold text-center">Track Order</h2>
+      <h2 className="text-4xl font-bold text-center mb-3">Track Order</h2>
       {/* Table */}
-      <div className="overflow-x-auto">
+      <div className="hidden md:block overflow-x-auto">
         <table className="table table-zebra">
           {/* head */}
           <thead>
@@ -49,6 +49,33 @@ const TrackOrder = () => {
             ))}
           </tbody>
         </table>
+      </div>
+
+      {/* Responsive Cards */}
+      <div className="md:hidden space-y-4">
+        {orders.map((order) => (
+          <div
+            key={order._id}
+            className="p-4 border rounded-lg shadow-sm bg-base-100">
+            <div className="flex items-center gap-3 mb-3">
+              <h3 className="font-semibold">{order.title}</h3>
+            </div>
+
+            <p>
+              <span className="font-semibold">Price:</span> {order.order_price}
+            </p>
+            <p>
+              <span className="font-semibold">Payment Method:</span>{" "}
+              {order.payment_option}
+            </p>
+
+            <Link to={`/trackings-log/${order.trackingId}`}>
+              <button className="btn bg-cyan-500 text-white border-none hover:cursor-pointer mt-3">
+                Track Order
+              </button>
+            </Link>
+          </div>
+        ))}
       </div>
     </div>
   );

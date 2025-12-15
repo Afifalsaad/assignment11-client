@@ -24,6 +24,8 @@ import ApprovedOrders from "../Pages/ApprovedOrders/ApprovedOrders";
 import TrackingsLog from "../Pages/TrackingsLog/TrackingsLog";
 import Profile from "../Pages/Profile/Profile";
 import TrackOrder from "../Pages/TrackOrder/TrackOrder";
+import ErrorPage from "../Pages/ErrorPage/ErrorPage";
+import BuyerRoutes from "./BuyerRoutes";
 
 export const router = createBrowserRouter([
   {
@@ -67,7 +69,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "/order-product/:id",
+        path: "order-product/:id",
         element: (
           <PrivateRoute>
             <OrderProduct></OrderProduct>
@@ -99,9 +101,11 @@ export const router = createBrowserRouter([
       {
         path: "my-orders",
         element: (
-          <PrivateRoute>
-            <MyOrders></MyOrders>
-          </PrivateRoute>
+          <BuyerRoutes>
+            <PrivateRoute>
+              <MyOrders></MyOrders>
+            </PrivateRoute>
+          </BuyerRoutes>
         ),
       },
       {
@@ -191,5 +195,9 @@ export const router = createBrowserRouter([
         ),
       },
     ],
+  },
+  {
+    path: "/*",
+    Component: ErrorPage,
   },
 ]);

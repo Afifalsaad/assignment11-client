@@ -71,7 +71,7 @@ const MyOrders = () => {
       </h2>
 
       {/* Table */}
-      <div className="overflow-x-auto">
+      <div className="hidden md:block overflow-x-auto">
         <table className="table table-zebra">
           {/* head */}
           <thead>
@@ -123,106 +123,144 @@ const MyOrders = () => {
             ))}
           </tbody>
         </table>
+      </div>
 
-        {/* Modal */}
-        <dialog ref={modalRef} className="modal modal-bottom sm:modal-middle">
-          <div className="modal-box">
-            <h2 className="text-2xl font-bold text-center mb-2">Details</h2>
-            {/* Table */}
-            <div className="overflow-x-auto">
-              <h2 className="font-bold">
-                Order ID:{" "}
-                <span className="text-gray-500 font-[10px]">
-                  {selectedOrder?._id}
-                </span>
-              </h2>
-              <h2 className="font-bold">
-                Title:{" "}
-                <span className="text-gray-500 font-[10px]">
-                  {selectedOrder?.title}
-                </span>
-              </h2>
-              <h2 className="font-bold">
-                Price:{" "}
-                <span className="text-gray-500 font-[10px]">
-                  {selectedOrder?.price} BDT
-                </span>
-              </h2>
-              <h2 className="font-bold">
-                Customer Name:{" "}
-                <span className="text-gray-500 font-[10px]">
-                  {selectedOrder?.first_name} {selectedOrder?.last_name}
-                </span>
-              </h2>
-              <h2 className="font-bold">
-                Ordered Quantity:{" "}
-                <span className="text-gray-500 font-[10px]">
-                  {selectedOrder?.order_quantity}
-                </span>
-              </h2>
-              <h2 className="font-bold">
-                Total:{" "}
-                <span className="text-gray-500 font-[10px]">
-                  {selectedOrder?.order_price}
-                </span>
-              </h2>
-              <h2 className="font-bold">
-                Contact No.:{" "}
-                <span className="text-gray-500 font-[10px]">
-                  {selectedOrder?.number}
-                </span>
-              </h2>
-              <h2 className="font-bold">
-                Address:{" "}
-                <span className="text-gray-500 font-[10px]">
-                  {selectedOrder?.address}
-                </span>
-              </h2>
-              <h2 className="font-bold">
-                Note:{" "}
-                <span className="text-gray-500 font-[10px]">
-                  {selectedOrder?.note}
-                </span>
-              </h2>
-              <h2 className="font-bold">
-                Status:{" "}
-                <span className="text-gray-500 font-[10px]">
-                  {selectedOrder?.status}
-                </span>
-              </h2>
-              <h2 className="font-bold">
-                Payment Option:{" "}
-                <span className="text-gray-500 font-[10px]">
-                  {selectedOrder?.payment_option}
-                </span>
-              </h2>
-              <h2 className="font-bold">
-                Payment Status:{" "}
-                <span className="text-gray-500 font-[10px]">
-                  {selectedOrder?.payment_status}
-                </span>
-              </h2>
-              <h2 className="font-bold">
-                Ordered At:{" "}
-                <span className="text-gray-500 font-[10px]">
-                  {selectedOrder?.orderedAt}
-                </span>
-              </h2>
-              <Link to={`/trackings-log/${selectedOrder.trackingId}`}>
-                <button className="btn bg-cyan-500 text-white border-none hover:cursor-pointer my-1">
-                  Track Order
-                </button>
-              </Link>
-            </div>
-
-            <div className="modal-action">
-              <form method="dialog">
-                {/* if there is a button in form, it will close the modal */}
-                <button className="btn">Close</button>
-              </form>
-            </div>
+      {/* Modal */}
+      <dialog ref={modalRef} className="modal modal-bottom sm:modal-middle">
+        <div className="modal-box">
+          <h2 className="text-2xl font-bold text-center mb-2">Details</h2>
+          {/* Table */}
+          <div className="overflow-x-auto">
+            <h2 className="font-bold">
+              Order ID:{" "}
+              <span className="text-gray-500 font-[10px]">
+                {selectedOrder?._id}
+              </span>
+            </h2>
+            <h2 className="font-bold">
+              Title:{" "}
+              <span className="text-gray-500 font-[10px]">
+                {selectedOrder?.title}
+              </span>
+            </h2>
+            <h2 className="font-bold">
+              Price:{" "}
+              <span className="text-gray-500 font-[10px]">
+                {selectedOrder?.price} BDT
+              </span>
+            </h2>
+            <h2 className="font-bold">
+              Customer Name:{" "}
+              <span className="text-gray-500 font-[10px]">
+                {selectedOrder?.first_name} {selectedOrder?.last_name}
+              </span>
+            </h2>
+            <h2 className="font-bold">
+              Ordered Quantity:{" "}
+              <span className="text-gray-500 font-[10px]">
+                {selectedOrder?.order_quantity}
+              </span>
+            </h2>
+            <h2 className="font-bold">
+              Total:{" "}
+              <span className="text-gray-500 font-[10px]">
+                {selectedOrder?.order_price}
+              </span>
+            </h2>
+            <h2 className="font-bold">
+              Contact No.:{" "}
+              <span className="text-gray-500 font-[10px]">
+                {selectedOrder?.number}
+              </span>
+            </h2>
+            <h2 className="font-bold">
+              Address:{" "}
+              <span className="text-gray-500 font-[10px]">
+                {selectedOrder?.address}
+              </span>
+            </h2>
+            <h2 className="font-bold">
+              Note:{" "}
+              <span className="text-gray-500 font-[10px]">
+                {selectedOrder?.note}
+              </span>
+            </h2>
+            <h2 className="font-bold">
+              Status:{" "}
+              <span className="text-gray-500 font-[10px]">
+                {selectedOrder?.status}
+              </span>
+            </h2>
+            <h2 className="font-bold">
+              Payment Option:{" "}
+              <span className="text-gray-500 font-[10px]">
+                {selectedOrder?.payment_option}
+              </span>
+            </h2>
+            <h2 className="font-bold">
+              Payment Status:{" "}
+              <span className="text-gray-500 font-[10px]">
+                {selectedOrder?.payment_status}
+              </span>
+            </h2>
+            <h2 className="font-bold">
+              Ordered At:{" "}
+              <span className="text-gray-500 font-[10px]">
+                {selectedOrder?.orderedAt}
+              </span>
+            </h2>
+            <Link to={`/trackings-log/${selectedOrder.trackingId}`}>
+              <button className="btn bg-cyan-500 text-white border-none hover:cursor-pointer my-1">
+                Track Order
+              </button>
+            </Link>
           </div>
-        </dialog>
+
+          <div className="modal-action">
+            <form method="dialog">
+              {/* if there is a button in form, it will close the modal */}
+              <button className="btn">Close</button>
+            </form>
+          </div>
+        </div>
+      </dialog>
+
+      {/* Responsive Cards */}
+      <div className="md:hidden space-y-4">
+        {orders.map((order) => (
+          <div
+            key={order._id}
+            className="p-4 border rounded-lg shadow-sm bg-base-100">
+            <div className="flex items-center gap-3 mb-3">
+              <h3 className="font-semibold">{order.title}</h3>
+            </div>
+
+            <p>
+              <span className="font-semibold">Price:</span> {order.order_price}
+            </p>
+            <p>
+              <span className="font-semibold">Payment Method:</span>{" "}
+              {order.payment_option}
+            </p>
+
+            {order.payment_status === "paid" ? (
+              <span className="text-green-400 text-xl font-bold mt-12 mr-1">Paid</span>
+            ) : order.payment_option === "Cash on Delivery" ? (
+              <span className="text-red-400 font-bold">Unavailable</span>
+            ) : (
+              <button
+                onClick={() => handlePayment(order)}
+                className="btn btn-primary btn-outline text-black">
+                Pay
+              </button>
+            )}
+            <button
+              onClick={() => handleShowModal(order)}
+              className="btn bg-cyan-500 text-white border-none hover:cursor-pointer my-3 mx-2">
+              View Order
+            </button>
+          </div>
+        ))}
       </div>
     </div>
   );
