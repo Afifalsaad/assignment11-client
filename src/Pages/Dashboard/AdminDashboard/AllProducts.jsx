@@ -131,7 +131,7 @@ const AllProducts = () => {
   };
 
   return (
-    <div>
+    <div className="text-secondary">
       {loading && (
         <div className="fixed h-screen inset-0 bg-white/50 flex items-center justify-center z-50 rounded-lg backdrop:bg-none">
           <LoadingSpinner />
@@ -368,6 +368,19 @@ const AllProducts = () => {
                 type="checkbox"
                 className="checkbox checkbox-warning"
               />
+            </div>
+            <div className="mt-3">
+              <button
+                onClick={() => handleShowModal(product)}
+                className="btn bg-[#40826D] text-white border-none hover:cursor-pointer">
+                Update
+              </button>
+
+              <button
+                onClick={() => handleDelete(product)}
+                className="btn bg-[#CD5C5C] text-white border-none ml-1 hover:cursor-pointerF">
+                Delete
+              </button>
             </div>
           </div>
         ))}

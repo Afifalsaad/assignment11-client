@@ -38,12 +38,12 @@ const AllOrders = () => {
     modalRef.current.showModal();
   };
   return (
-    <div>
-      <h2 className="text-4xl font-bold text-center py-12">
+    <div className="text-secondary">
+      <h2 className="text-4xl font-bold text-center mb-3">
         All Orders: {orders.length}
       </h2>
 
-      <div className="flex justify-between my-2 items-center">
+      <div className="flex flex-col md:flex-row md:justify-between my-2 md:items-center">
         {/* Search Box */}
         <label className="input my-6">
           <svg
@@ -222,29 +222,35 @@ const AllOrders = () => {
 
       {/* Responsive Cards */}
       <div className="md:hidden space-y-4">
-        {orders.map((order) => (
+        {filteredOrders.map((order) => (
           <div
             key={order._id}
             className="p-4 border rounded-lg shadow-sm bg-base-100">
-            <div className="flex items-center gap-3 mb-3">
-              <div className="avatar">
-                <div className="mask mask-squircle h-14 w-14">
-                  <img src={order.image?.[0]} />
-                </div>
-              </div>
-              <h3 className="font-semibold">{order.name}</h3>
-            </div>
+            <p>
+              <span className="font-semibold">Order ID:</span> {order._id}
+            </p>
 
             <p>
-              <span className="font-semibold">Price:</span> {order.price}
+              <span className="font-semibold">User:</span> {order.first_name}{" "}
+              {order.last_name}
             </p>
             <p>
-              <span className="font-semibold">Category:</span> {order.category}
+              <span className="font-semibold">Product:</span> {order.title}
             </p>
             <p>
-              <span className="font-semibold">Created:</span>{" "}
-              {new Date(order.createdAt).toLocaleString()}
+              <span className="font-semibold">Quantity:</span>{" "}
+              {order.order_quantity}
             </p>
+            <p>
+              <span className="font-semibold">Status:</span> {order.status}
+            </p>
+            <div className="mt-3">
+              <button
+                onClick={() => handleModal(order)}
+                className="btn bg-cyan-500 text-white border-none hover:cursor-pointer">
+                View Details
+              </button>
+            </div>
           </div>
         ))}
       </div>

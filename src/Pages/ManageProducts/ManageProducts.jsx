@@ -11,7 +11,6 @@ import useRole from "../../Hooks/useRole";
 const ManageProducts = () => {
   const { user } = useAuth();
   const { role } = useRole();
-  console.log(role);
   const axiosSecure = useAxiosSecure();
   const [loading, setLoading] = useState(false);
   const [previews, setPreviews] = useState([]);
@@ -23,6 +22,7 @@ const ManageProducts = () => {
     queryKey: [user?.email],
     queryFn: async () => {
       const res = await axiosSecure.get(`/my-products?email=${user.email}`);
+      console.log(res.data);
       return res.data;
     },
   });
@@ -115,7 +115,7 @@ const ManageProducts = () => {
         if (res.data.deletedCount) {
           Swal.fire({
             title: "Deleted",
-            icon: "warning",
+            icon: "success",
           });
           refetch();
         }
@@ -124,18 +124,18 @@ const ManageProducts = () => {
   };
 
   return (
-    <div>
+    <div className="text-secondary">
       {loading && (
         <div className="fixed h-screen inset-0 bg-white/50 flex items-center justify-center z-50 rounded-lg backdrop:bg-none">
           <LoadingSpinner />
         </div>
       )}
-      <h2 className="text-4xl font-bold text-center">
+      <h2 className="text-4xl font-bold text-center mb-3">
         Manage Products: {products.length}
       </h2>
 
       {/* Table */}
-      <div className="overflow-x-auto">
+      <div className="hidden md:block overflow-x-auto">
         <table className="table">
           {/* head */}
           <thead>
@@ -161,7 +161,7 @@ const ManageProducts = () => {
                 </td>
                 <td>{product.name}</td>
                 <td>{product.price}</td>
-                <td>{product.payment_status}</td>
+                <td>{product.payment_option}</td>
                 <th>
                   <button
                     onClick={() => openModal(product)}
@@ -296,6 +296,49 @@ const ManageProducts = () => {
           </div>
         </div>
       </dialog>
+
+      {/* Responsive Cards */}
+      <div className="md:hidden space-y-4">
+        {products.map((product) => (
+          <div
+            key={product._id}
+            className="p-4 border rounded-lg shadow-sm bg-base-100">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="avatar">
+                <div className="mask mask-squircle h-14 w-14">
+                  <img src={product.image?.[0]} />
+                </div>
+              </div>
+              <h3 className="font-semibold">{product.name}</h3>
+            </div>
+
+            <p>
+              <span className="font-semibold">Price:</span> {product.price}
+            </p>
+            <p>
+              <span className="font-semibold">Category:</span>{" "}
+              {product.category}
+            </p>
+            <p>
+              <span className="font-semibold">Payment Method: </span>
+              {product.payment_option}
+            </p>
+            <div className="mt-3">
+              <button
+                onClick={() => openModal(product)}
+                className="btn bg-[#40826D] text-white border-none hover:cursor-pointer">
+                Update
+              </button>
+
+              <button
+                onClick={() => handleDelete(product)}
+                className="btn bg-[#CD5C5C] text-white border-none ml-1 hover:cursor-pointerF">
+                Delete
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

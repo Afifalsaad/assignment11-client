@@ -65,7 +65,7 @@ const MyOrders = () => {
   };
 
   return (
-    <div>
+    <div className="text-secondary">
       <h2 className="text-4xl font-bold text-center mb-6">
         My Orders: {orders.length}
       </h2>
@@ -98,7 +98,7 @@ const MyOrders = () => {
                   ) : (
                     <button
                       onClick={() => handlePayment(order)}
-                      className="btn btn-primary btn-outline text-black">
+                      className="btn btn-primary btn-outline text-secondary">
                       Pay
                     </button>
                   )}
@@ -250,7 +250,7 @@ const MyOrders = () => {
             ) : (
               <button
                 onClick={() => handlePayment(order)}
-                className="btn btn-primary btn-outline text-black">
+                className="btn btn-primary btn-outline text-secondary">
                 Pay
               </button>
             )}

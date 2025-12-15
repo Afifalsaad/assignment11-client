@@ -59,7 +59,7 @@ const ApprovedOrders = () => {
       </h2>
 
       {/* Table */}
-      <div className="overflow-x-auto">
+      <div className="hidden md:block overflow-x-auto">
         <table className="table table-zebra">
           {/* head */}
           <thead>
@@ -96,78 +96,115 @@ const ApprovedOrders = () => {
             ))}
           </tbody>
         </table>
+      </div>
 
-        {/* Modal */}
+      {/* Modal */}
+      <dialog ref={modalRef} className="modal">
+        <div className="modal-box">
+          {/* Table */}
+          <div className="max-w-10/12 mx-auto">
+            <form
+              onSubmit={handleSubmit(handleUpdate)}
+              className="grid grid-cols-1 md:grid-cols-2 gap-10">
+              <div>
+                <fieldset className="fieldset flex-1">
+                  {/* Location */}
+                  <label className="font-bold text-md">Location</label>
+                  <input
+                    type="text"
+                    {...register("location")}
+                    className="input w-full mb-4 bg-white"
+                    placeholder="Location"
+                  />
 
-        <dialog ref={modalRef} className="modal">
-          <div className="modal-box">
-            {/* Table */}
-            <div className="max-w-10/12 mx-auto">
-              <form
-                onSubmit={handleSubmit(handleUpdate)}
-                className="grid grid-cols-1 md:grid-cols-2 gap-10">
-                <div>
-                  <fieldset className="fieldset flex-1">
-                    {/* Location */}
-                    <label className="font-bold text-md">Location</label>
-                    <input
-                      type="text"
-                      {...register("location")}
-                      className="input w-full mb-4 bg-white"
-                      placeholder="Location"
-                    />
+                  {/* Note */}
+                  <label className="font-bold text-md">Note</label>
+                  <textarea
+                    {...register("note")}
+                    className="border border-[#d1d1d1] p-2 rounded-md mb-4 bg-white"
+                    rows="4"
+                    placeholder="Note"></textarea>
 
-                    {/* Note */}
-                    <label className="font-bold text-md">Note</label>
-                    <textarea
-                      {...register("note")}
-                      className="border border-[#d1d1d1] p-2 rounded-md mb-4 bg-white"
-                      rows="4"
-                      placeholder="Note"></textarea>
+                  {/* Category */}
+                  <label className="font-bold text-md">Status</label>
+                  <select
+                    {...register("status")}
+                    defaultValue="Select a status"
+                    className="select w-full mb-4  bg-white">
+                    <option disabled={true}>Select a status</option>
+                    <option>Cutting Completed</option>
+                    <option>Sewing Started</option>
+                    <option>Finishing</option>
+                    <option>QC Checked</option>
+                    <option>Packed</option>
+                    <option>Shipped</option>
+                    <option>Out for Delivery</option>
+                  </select>
+                </fieldset>
+              </div>
 
-                    {/* Category */}
-                    <label className="font-bold text-md">Status</label>
-                    <select
-                      {...register("status")}
-                      defaultValue="Select a status"
-                      className="select w-full mb-4  bg-white">
-                      <option disabled={true}>Select a status</option>
-                      <option>Cutting Completed</option>
-                      <option>Sewing Started</option>
-                      <option>Finishing</option>
-                      <option>QC Checked</option>
-                      <option>Packed</option>
-                      <option>Shipped</option>
-                      <option>Out for Delivery</option>
-                    </select>
-                  </fieldset>
-                </div>
+              <div>
+                <fieldset className="fieldset flex-1">
+                  {/* Date/Time */}
+                  <label className="font-bold text-md">Date/Time</label>
+                  <input
+                    type="datetime-local"
+                    {...register("date_time")}
+                    className="input w-full mb-4 bg-white"
+                    placeholder="Date"
+                  />
+                </fieldset>
+              </div>
+              <button type="submit" className="btn btn-primary text-black">
+                Submit
+              </button>
+            </form>
+          </div>
+          <div className="modal-action">
+            <form method="dialog">
+              {/* if there is a button in form, it will close the modal */}
+              <button className="btn">Close</button>
+            </form>
+          </div>
+        </div>
+      </dialog>
 
-                <div>
-                  <fieldset className="fieldset flex-1">
-                    {/* Date/Time */}
-                    <label className="font-bold text-md">Date/Time</label>
-                    <input
-                      type="datetime-local"
-                      {...register("date_time")}
-                      className="input w-full mb-4 bg-white"
-                      placeholder="Date"
-                    />
-                  </fieldset>
-                </div>
-                <button type="submit" className="btn btn-primary text-black">
-                  Submit
+      {/* Responsive Cards */}
+      <div className="md:hidden space-y-4">
+        {products.map((product) => (
+          <div
+            key={product._id}
+            className="p-4 border rounded-lg shadow-sm bg-base-100">
+            <h2>Order ID: {product.id}</h2>
+
+            <p>
+              <span className="font-semibold">User: </span> {product.email}
+            </p>
+            <p>
+              <span className="font-semibold">Product: </span> {product.title}
+            </p>
+            <p>
+              <span className="font-semibold">Quantity: </span>
+              {product.order_quantity}
+            </p>
+            <p>
+              <span className="font-semibold">Order Date: </span>
+              {new Date(product.orderedAt).toLocaleDateString()}
+            </p>
+            <div className="mt-3">
+              <button
+                onClick={() => handleModal(product)}
+                className="btn bg-cyan-500 text-white border-none hover:cursor-pointer mx-1">
+                Add Trackings
+              </button>
+              <Link to={`/trackings-log/${product.trackingId}`}>
+                <button className="btn bg-cyan-500 text-white border-none hover:cursor-pointer mx-1">
+                  View Trackings
                 </button>
-              </form>
-            </div>
-            <div className="modal-action">
-              <form method="dialog">
-                {/* if there is a button in form, it will close the modal */}
-                <button className="btn">Close</button>
-              </form>
+              </Link>
             </div>
           </div>
-        </dialog>
+        ))}
       </div>
     </div>
   );

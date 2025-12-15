@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import useRole from "../../../Hooks/useRole";
 import useAuth from "../../../Hooks/useAuth";
 import { useForm } from "react-hook-form";
+import { Link } from "react-router";
 
 const ManageUser = () => {
   const axiosSecure = useAxiosSecure();
@@ -76,11 +77,11 @@ const ManageUser = () => {
   };
 
   return (
-    <div>
-      <h2 className="text-4xl font-bold">Manage User</h2>
+    <div className="text-secondary">
+      <h2 className="text-4xl font-bold text-center mb-3">Manage User</h2>
 
       {/* // Table */}
-      <div className="overflow-x-auto">
+      <div className="hidden md:block overflow-x-auto">
         <table className="table table-zebra">
           {/* head */}
           <thead>
@@ -179,6 +180,60 @@ const ManageUser = () => {
           </div>
         </div>
       </dialog>
+
+      {/* Responsive Cards */}
+      <div className="md:hidden space-y-4">
+        {users.map((user) => (
+          <div
+            key={user._id}
+            className="p-4 border rounded-lg shadow-sm bg-base-100">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="avatar">
+                <div className="mask mask-squircle h-14 w-14">
+                  <img src={user?.photoURL} />
+                </div>
+              </div>
+              <h3 className="font-semibold">{user.userName}</h3>
+            </div>
+            <h2>
+              <span className="font-semibold"></span>Email: {user.userEmail}
+            </h2>
+
+            <p>
+              <span className="font-semibold">Role: </span> {user.role}
+            </p>
+            <div className="mt-3">
+              {loggedInUser?.email === user?.userEmail ? (
+                ""
+              ) : (
+                <td>
+                  {user.role === "Manager" ? (
+                    <button
+                      disabled={true}
+                      className="btn bg-[#98bbb0] hover:cursor-not-allowed text-white border-none">
+                      {" "}
+                      Approved{" "}
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => handleApprove(user)}
+                      className="btn bg-[#40826D] text-white border-none">
+                      Approve
+                    </button>
+                  )}
+
+                  <button
+                    onClick={() => handleShowModal(user)}
+                    disabled={user.role === "suspended"}
+                    className="btn bg-[#CD5C5C] text-white border-none ml-1 hover:cursor-pointer disabled:bg-[#f2a7a7] disabled:hover:cursor-not-allowed">
+                    {user.role === "suspended" ? "Suspended" : "Suspend"}
+                  </button>
+                </td>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

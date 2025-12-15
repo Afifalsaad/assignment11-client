@@ -56,7 +56,7 @@ const PendingOrders = () => {
       </h2>
 
       {/* Table */}
-      <div className="overflow-x-auto">
+      <div className="hidden md:block overflow-x-auto">
         <table className="table table-zebra">
           {/* head */}
           <thead>
@@ -98,6 +98,49 @@ const PendingOrders = () => {
             ))}
           </tbody>
         </table>
+      </div>
+
+      {/* Responsive Cards */}
+      <div className="md:hidden space-y-4">
+        {orders.map((order) => (
+          <div
+            key={order._id}
+            className="p-4 border rounded-lg shadow-sm bg-base-100">
+            <h2>Order ID: {order.id}</h2>
+
+            <p>
+              <span className="font-semibold">User: </span> {order.email}
+            </p>
+            <p>
+              <span className="font-semibold">Product: </span> {order.title}
+            </p>
+            <p>
+              <span className="font-semibold">Quantity: </span>
+              {order.order_quantity}
+            </p>
+            <p>
+              <span className="font-semibold">Order Date: </span>
+              {new Date(order.orderedAt).toLocaleDateString()}
+            </p>
+            <div className="mt-3">
+              <button
+                onClick={() => approveOrder(order)}
+                className="btn bg-[#40826D] text-white border-none hover:cursor-pointer">
+                Approve
+              </button>
+              <button
+                onClick={() => rejectOrder(order)}
+                className="btn bg-[#CD5C5C] text-white border-none ml-1 hover:cursor-pointerF">
+                Reject
+              </button>
+              <Link to="/dashboard/my-orders">
+                <button className="btn bg-cyan-500 text-white border-none hover:cursor-pointer mx-1">
+                  View
+                </button>
+              </Link>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );

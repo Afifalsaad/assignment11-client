@@ -50,7 +50,7 @@ const AddProducts = () => {
       image: imageURLs,
       demo_video: data.demoVideo,
       payment_option: data.paymentOption,
-      payment_status: 'pending'
+      payment_status: "pending",
     };
     axiosSecure.post("/products", productDetails).then((res) => {
       if (res.data.insertedId) {
@@ -66,7 +66,7 @@ const AddProducts = () => {
   };
 
   return (
-    <div>
+    <div className="text-secondary">
       {loading && (
         <div className="fixed h-screen inset-0 bg-white/50 flex items-center justify-center z-50 rounded-lg backdrop:bg-none">
           <LoadingSpinner />

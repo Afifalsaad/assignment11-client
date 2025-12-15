@@ -73,7 +73,7 @@ const OrderProduct = () => {
   };
 
   return (
-    <div>
+    <div className="text-secondary">
       <div className="bg-primary/20">
         <h2 className="text-4xl font-bold text-center py-12">Order Products</h2>
 

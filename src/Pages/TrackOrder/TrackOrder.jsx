@@ -17,7 +17,7 @@ const TrackOrder = () => {
     },
   });
   return (
-    <div>
+    <div className="text-secondary">
       <h2 className="text-4xl font-bold text-center mb-3">Track Order</h2>
       {/* Table */}
       <div className="hidden md:block overflow-x-auto">
