@@ -8,7 +8,7 @@ const TrackOrder = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
 
-  const { data: orders = [] } = useQuery({
+  const { data } = useQuery({
     queryKey: [user?.email],
     queryFn: async () => {
       const res = await axiosSecure.get(`/my-orders?email=${user?.email}`);
@@ -16,6 +16,9 @@ const TrackOrder = () => {
       return res.data;
     },
   });
+
+  const orders = Array.isArray(data) ? data : [];
+
   return (
     <div className="text-secondary">
       <h2 className="text-4xl font-bold text-center mb-3">Track Order</h2>

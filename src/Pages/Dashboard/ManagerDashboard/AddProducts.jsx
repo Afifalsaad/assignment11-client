@@ -5,6 +5,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import useAuth from "../../../Hooks/useAuth";
 import LoadingSpinner from "../../Loading/Loading";
+import { useQuery } from "@tanstack/react-query";
 
 const AddProducts = () => {
   const { user } = useAuth();
@@ -12,6 +13,15 @@ const AddProducts = () => {
   const [previews, setPreviews] = useState([]);
   const [loading, setLoading] = useState(false);
   const { register, handleSubmit, reset } = useForm();
+
+  const { data: currentUser = [] } = useQuery({
+    queryKey: [],
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/user/status?email=${user.email}`);
+      console.log(res.data);
+      return res.data;
+    },
+  });
 
   if (loading) {
     return <LoadingSpinner></LoadingSpinner>;
@@ -130,7 +140,6 @@ const AddProducts = () => {
                 placeholder="Description"></textarea>
             </fieldset>
           </div>
-
           <div>
             <fieldset className="fieldset flex-1">
               {/* Minimum order quantity */}
@@ -190,7 +199,11 @@ const AddProducts = () => {
               </select>
             </fieldset>
           </div>
-          <button className="btn btn-primary text-black">Submit</button>
+          <button
+            disabled={currentUser.status === "suspended"}
+            className="w-full py-3 rounded-xl bg-primary hover:cursor-pointer disabled:bg-primary/50 disabled:hover:cursor-not-allowed disabled:text-black/30 text-secondary font-semibold text-lg hover:bg-yellow-500 low transition">
+            Submit
+          </button>
         </form>
       </div>
     </div>

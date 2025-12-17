@@ -10,7 +10,7 @@ const ManageUser = () => {
   const axiosSecure = useAxiosSecure();
   const { user: loggedInUser } = useAuth();
   const modalRef = useRef();
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, reset } = useForm();
   const [selectedUser, setSelectedUser] = useState(null);
   const [searchUser, setSearchUser] = useState("");
   const [filterUser, setFilterUser] = useState("");
@@ -19,7 +19,6 @@ const ManageUser = () => {
     queryKey: ["users"],
     queryFn: async () => {
       const res = await axiosSecure.get("/users");
-      console.log(res.data);
       return res.data;
     },
   });
@@ -42,16 +41,29 @@ const ManageUser = () => {
       reason: data.reason,
       feedback: data.feedback,
     };
-
-    await axiosSecure
-      .post(`/suspend/${selectedUser._id}`, reason)
-      .then((res) => {
-        if (res.data.insertedId) {
-          modalRef.current.close();
-          refetch();
-          console.log(res.data);
-        }
-      });
+    modalRef.current.close();
+    Swal.fire({
+      title: "Are you sure?",
+      text: `You want to suspend ${selectedUser.userName}?`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes!",
+    }).then((res) => {
+      if (res.isConfirmed) {
+        axiosSecure.post(`/suspend/${selectedUser._id}`, reason).then((res) => {
+          if (res.data.insertedId) {
+            refetch();
+            reset();
+            Swal.fire({
+              title: "Suspended",
+              icon: "success",
+            });
+          }
+        });
+      }
+    });
   };
 
   const handleShowModal = (user) => {
@@ -113,7 +125,7 @@ const ManageUser = () => {
             onChange={(e) => setSearchUser(e.target.value)}
             type="search"
             className="grow"
-            placeholder="Search Order"
+            placeholder="Search User"
           />
         </label>
 
@@ -144,6 +156,7 @@ const ManageUser = () => {
               <th>Name</th>
               <th>Email</th>
               <th>Role</th>
+              <th>Status</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -164,11 +177,12 @@ const ManageUser = () => {
                 <td>{user.userName}</td>
                 <td>{user.userEmail}</td>
                 <td>{user.role}</td>
+                <td>{user.status}</td>
                 {loggedInUser?.email === user?.userEmail ? (
                   ""
                 ) : (
                   <td>
-                    {user.role === "Manager" ? (
+                    {user.role === "Manager" && user.status === "approved" ? (
                       <button
                         disabled={true}
                         className="btn bg-[#98bbb0] hover:cursor-not-allowed text-white border-none">
@@ -185,9 +199,9 @@ const ManageUser = () => {
 
                     <button
                       onClick={() => handleShowModal(user)}
-                      disabled={user.role === "suspended"}
+                      disabled={user.status === "suspended"}
                       className="btn bg-[#CD5C5C] text-white border-none ml-1 hover:cursor-pointer disabled:bg-[#f2a7a7] disabled:hover:cursor-not-allowed">
-                      {user.role === "suspended" ? "Suspended" : "Suspend"}
+                      {user.status === "suspended" ? "Suspended" : "Suspend"}
                     </button>
                   </td>
                 )}
@@ -251,39 +265,36 @@ const ManageUser = () => {
             <h2>
               <span className="font-semibold"></span>Email: {user.userEmail}
             </h2>
-
             <p>
-              <span className="font-semibold">Role: </span> {user.role}
+              <span className="font-semibold mb-3">Role: </span> {user.role}
             </p>
-            <div className="mt-3">
-              {loggedInUser?.email === user?.userEmail ? (
-                ""
-              ) : (
-                <td>
-                  {user.role === "Manager" ? (
-                    <button
-                      disabled={true}
-                      className="btn bg-[#98bbb0] hover:cursor-not-allowed text-white border-none">
-                      {" "}
-                      Approved{" "}
-                    </button>
-                  ) : (
-                    <button
-                      onClick={() => handleApprove(user)}
-                      className="btn bg-[#40826D] text-white border-none">
-                      Approve
-                    </button>
-                  )}
-
+            {loggedInUser?.email === user?.userEmail ? (
+              ""
+            ) : (
+              <>
+                {user.role === "Manager" ? (
                   <button
-                    onClick={() => handleShowModal(user)}
-                    disabled={user.role === "suspended"}
-                    className="btn bg-[#CD5C5C] text-white border-none ml-1 hover:cursor-pointer disabled:bg-[#f2a7a7] disabled:hover:cursor-not-allowed">
-                    {user.role === "suspended" ? "Suspended" : "Suspend"}
+                    disabled={true}
+                    className="btn bg-[#98bbb0] hover:cursor-not-allowed text-white border-none">
+                    {" "}
+                    Approved{" "}
                   </button>
-                </td>
-              )}
-            </div>
+                ) : (
+                  <button
+                    onClick={() => handleApprove(user)}
+                    className="btn bg-[#40826D] text-white border-none">
+                    Approve
+                  </button>
+                )}
+
+                <button
+                  onClick={() => handleShowModal(user)}
+                  disabled={user.role === "suspended"}
+                  className="btn bg-[#CD5C5C] text-white border-none ml-1 hover:cursor-pointer disabled:bg-[#f2a7a7] disabled:hover:cursor-not-allowed">
+                  {user.role === "suspended" ? "Suspended" : "Suspend"}
+                </button>
+              </>
+            )}
           </div>
         ))}
       </div>

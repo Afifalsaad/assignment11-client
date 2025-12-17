@@ -18,14 +18,17 @@ const ManageProducts = () => {
   const modalRef = useRef();
 
   const { register, handleSubmit, reset } = useForm();
-  const { data: products = [], refetch } = useQuery({
+  const { data, refetch } = useQuery({
     queryKey: [user?.email],
     queryFn: async () => {
       const res = await axiosSecure.get(`/my-products?email=${user.email}`);
       console.log(res.data);
       return res.data;
     },
+    enabled: !!user?.email,
   });
+
+  const products = Array.isArray(data) ? data : [];
 
   const openModal = (product) => {
     setSelectedProduct(product);
@@ -148,7 +151,7 @@ const ManageProducts = () => {
             </tr>
           </thead>
           <tbody>
-            {products.map((product) => (
+            {products?.map((product) => (
               <tr key={product._id}>
                 <td>
                   <div className="flex items-center gap-3">
@@ -299,7 +302,7 @@ const ManageProducts = () => {
 
       {/* Responsive Cards */}
       <div className="md:hidden space-y-4">
-        {products.map((product) => (
+        {products?.map((product) => (
           <div
             key={product._id}
             className="p-4 border rounded-lg shadow-sm bg-base-100">

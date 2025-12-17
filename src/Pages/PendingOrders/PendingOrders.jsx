@@ -15,7 +15,14 @@ const PendingOrders = () => {
       const res = await axiosSecure.get(
         `/pending-orders?email=${user?.email}&status=pending&payment_status=paid`
       );
-      console.log(orders);
+      return res.data;
+    },
+  });
+
+  const { data: currentUser = [] } = useQuery({
+    queryKey: [user?.email],
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/user/status?email=${user.email}`);
       return res.data;
     },
   });
@@ -79,13 +86,15 @@ const PendingOrders = () => {
                 <td>{new Date(order.orderedAt).toLocaleDateString()}</td>
                 <td>
                   <button
+                    disabled={currentUser.status === "suspended"}
                     onClick={() => approveOrder(order)}
-                    className="btn bg-[#40826D] text-white border-none hover:cursor-pointer">
+                    className="btn bg-[#40826D] text-white border-none hover:cursor-pointer disabled:bg-[#9CC8BB] disabled:hover:cursor-not-allowed ">
                     Approve
                   </button>
                   <button
+                    disabled={currentUser.status === "suspended"}
                     onClick={() => rejectOrder(order)}
-                    className="btn bg-[#CD5C5C] text-white border-none ml-1 hover:cursor-pointerF">
+                    className="btn bg-[#CD5C5C] text-white border-none ml-1 hover:cursor-pointer disabled:hover:cursor-not-allowed disabled:bg-[#E6A3A3]">
                     Reject
                   </button>
                   <Link to="/dashboard/my-orders">

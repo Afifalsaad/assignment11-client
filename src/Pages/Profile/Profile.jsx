@@ -3,11 +3,31 @@ import useAuth from "../../Hooks/useAuth";
 import useRole from "../../Hooks/useRole";
 import LoadingSpinner from "../Loading/Loading";
 import Swal from "sweetalert2";
+import useAxiosSecure from "../../Hooks/useAxiosSecure";
+import { useQuery } from "@tanstack/react-query";
 
 const Profile = () => {
   const { user, loading, logOut } = useAuth();
-  console.log(user);
+  const axiosSecure = useAxiosSecure();
   const { role } = useRole();
+
+  const { data: currentUser = [] } = useQuery({
+    queryKey: [user?.email],
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/user/status?email=${user.email}`);
+      return res.data;
+    },
+  });
+
+  const { data: feedback } = useQuery({
+    queryKey: [currentUser?._id],
+    queryFn: async () => {
+      const res = await axiosSecure.get(
+        `/suspend-feedback/${currentUser?._id}`
+      );
+      return res.data;
+    },
+  });
 
   if (loading) {
     return <LoadingSpinner></LoadingSpinner>;
@@ -60,14 +80,32 @@ const Profile = () => {
             </div>
 
             <div>
-              <p className="text-sm text-gray-500">Phone</p>
-              <p className="text-lg">{user?.phone}</p>
-            </div>
-
-            <div>
               <p className="text-sm text-gray-500">Role</p>
-              <span className="badge badge-primary">{role}</span>
+              <span className="badge badge-primary text-black/60 font-semibold">{role}</span>
             </div>
+            <div>
+              <p className="text-sm text-gray-500">Status</p>
+              <span className="badge badge-primary text-black/60 font-semibold">{currentUser?.status}</span>
+            </div>
+            {currentUser?.status === "suspended" && feedback && (
+              <div className="mt-4 p-4 rounded-xl border border-red-200 bg-red-50">
+                <h3 className="text-sm font-semibold text-red-600 mb-2">
+                  Account Suspension Details
+                </h3>
+
+                <div className="space-y-2">
+                  <p className="text-sm">
+                    <span className="font-medium text-gray-700">Reason:</span>{" "}
+                    <span className="text-gray-600">{feedback?.reason}</span>
+                  </p>
+
+                  <p className="text-sm">
+                    <span className="font-medium text-gray-700">Feedback:</span>{" "}
+                    <span className="text-gray-600">{feedback?.feedback}</span>
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
         </div>
 

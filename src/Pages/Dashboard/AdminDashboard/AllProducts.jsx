@@ -17,7 +17,7 @@ const AllProducts = () => {
 
   const { register, handleSubmit, reset } = useForm();
   const { data: products = [], refetch } = useQuery({
-    queryKey: [],
+    queryKey: ['allProducts'],
     queryFn: async () => {
       const res = await axiosSecure.get("/all-products");
       console.log(res.data.result);

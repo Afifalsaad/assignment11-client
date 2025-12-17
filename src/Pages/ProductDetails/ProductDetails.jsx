@@ -3,11 +3,12 @@ import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 import { Link, useParams } from "react-router";
 import useRole from "../../Hooks/useRole";
+import useAuth from "../../Hooks/useAuth";
 
 const ProductDetails = () => {
+  const { user } = useAuth();
   const { id } = useParams();
   const { role } = useRole();
-  console.log(role);
 
   const axiosSecure = useAxiosSecure();
 
@@ -15,6 +16,14 @@ const ProductDetails = () => {
     queryKey: [id],
     queryFn: async () => {
       const res = await axiosSecure.get(`/productDetails/${id}`);
+      return res.data;
+    },
+  });
+
+  const { data: currentUser = [] } = useQuery({
+    queryKey: [user?.email],
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/user/status?email=${user.email}`);
       return res.data;
     },
   });
@@ -80,7 +89,9 @@ const ProductDetails = () => {
             <Link to={`/order-product/${product._id}`}>
               <div>
                 <button
-                  disabled={role !== "Buyer"}
+                  disabled={
+                    role !== "Buyer" || currentUser.status === "suspended"
+                  }
                   className="w-full py-3 rounded-xl bg-primary hover:cursor-pointer disabled:bg-primary/50 disabled:hover:cursor-not-allowed disabled:text-black/30 text-secondary font-semibold text-lg hover:bg-yellow-500 low transition">
                   Order / Book Now
                 </button>

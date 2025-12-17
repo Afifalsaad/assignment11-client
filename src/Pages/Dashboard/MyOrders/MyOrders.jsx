@@ -11,7 +11,7 @@ const MyOrders = () => {
   const [selectedOrder, setSelectedOrder] = useState([]);
   const modalRef = useRef();
 
-  const { data: orders = [], refetch } = useQuery({
+  const { data, refetch } = useQuery({
     queryKey: [user?.email],
     queryFn: async () => {
       const res = await axiosSecure.get(`/my-orders?email=${user?.email}`);
@@ -19,6 +19,8 @@ const MyOrders = () => {
       return res.data;
     },
   });
+
+  const orders = Array.isArray(data) ? data : [];
 
   const handleShowModal = (order) => {
     setSelectedOrder(order);
@@ -244,7 +246,9 @@ const MyOrders = () => {
             </p>
 
             {order.payment_status === "paid" ? (
-              <span className="text-green-400 text-xl font-bold mt-12 mr-1">Paid</span>
+              <span className="text-green-400 text-xl font-bold mt-12 mr-1">
+                Paid
+              </span>
             ) : order.payment_option === "Cash on Delivery" ? (
               <span className="text-red-400 font-bold">Unavailable</span>
             ) : (
