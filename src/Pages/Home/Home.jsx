@@ -18,7 +18,7 @@ const Home = () => {
   }
 
   return (
-    <div className="max-w-11/12 mx-auto px-6">
+    <div className="max-w-11/12 mx-auto">
       <Banner></Banner>
       <OurProducts></OurProducts>
       <HowItWorks></HowItWorks>

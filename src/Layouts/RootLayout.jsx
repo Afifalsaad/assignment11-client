@@ -27,11 +27,13 @@ const RootLayout = () => {
     }
   }, [location.pathname]);
   return (
-    <div className="">
+    <>
       <Navbar></Navbar>
-      <Outlet></Outlet>
-      <Footer></Footer>
-    </div>
+      <div className="max-w-[1200px] mx-auto">
+        <Outlet></Outlet>
+        <Footer></Footer>
+      </div>
+    </>
   );
 };
 

@@ -53,12 +53,12 @@ const OurProducts = () => {
                 <span className="font-bold">Description:</span> {product.description}
               </p>
               <div className="card-actions mt-2">
-                <button className="px-3 py-1 border border-[#dfdfdf] text-sm hover:border-black">
+                <button className="px-3 py-1 border border-[#dfdfdf] text-sm hover:border-black/30 hover:cursor-pointer">
                   L
                 </button>
-                <p className="px-3 py-1 border text-sm">M</p>
-                <p className="px-3 py-1 border text-sm">XL</p>
-                <p className="px-3 py-1 border text-sm">XXL</p>
+                <p className="px-3 py-1 border border-[#dfdfdf] text-sm hover:border-black/30 hover:cursor-pointer">M</p>
+                <p className="px-3 py-1 border border-[#dfdfdf] text-sm hover:border-black/30 hover:cursor-pointer">XL</p>
+                <p className="px-3 py-1 border border-[#dfdfdf] text-sm hover:border-black/30 hover:cursor-pointer">XXL</p>
               </div>
               <div>
                 <Link

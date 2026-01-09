@@ -39,7 +39,7 @@ const AllProductsHome = () => {
 
   return (
     <div className="max-w-11/12 mx-auto pt-5 p-6 mb-10">
-      <h2 className="text-4xl font-bold text-center py-8">
+      <h2 className="text-xl font-bold text-center pt-14 pb-4">
         All Products: <span className="text-yellow-700">{totalProducts}</span>
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-center items-center text-left">
@@ -80,7 +80,7 @@ const AllProductsHome = () => {
                 </span>
               </h2>
               <div className="card-actions mt-2">
-                <button className="px-3 py-1 border border-[#dfdfdf] text-sm hover:border-black">
+                <button className="px-3 py-1 border border-[#dfdfdf] text-sm hover:border-black/30">
                   L
                 </button>
                 <button className="px-3 py-1 border border-[#dfdfdf] text-sm hover:border-black">

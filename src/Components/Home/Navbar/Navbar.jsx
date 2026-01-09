@@ -55,7 +55,7 @@ const Navbar = () => {
 
   return (
     <div>
-      <div className="navbar bg-primary/30">
+      <div className="navbar bg-neutral fixed z-50">
         <div className="navbar-start">
           <div className="dropdown">
             <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -65,7 +65,6 @@ const Navbar = () => {
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor">
-                {" "}
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -85,7 +84,7 @@ const Navbar = () => {
           </Link>
         </div>
         <ThemeSwitcher></ThemeSwitcher>
-        <div className="hidden lg:flex font-semibold">
+        <div className="hidden lg:flex justify-between font-semibold">
           <div className="w-[500px]">
             <ul className="menu flex-row">{links}</ul>
           </div>

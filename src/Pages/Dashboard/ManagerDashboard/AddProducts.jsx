@@ -109,7 +109,7 @@ const AddProducts = () => {
               <select
                 {...register("category")}
                 defaultValue="Select a category"
-                className="select w-full mb-4  bg-white">
+                className="select w-full mb-4 bg-white">
                 <option disabled={true}>Select a category</option>
                 <option>Shirt</option>
                 <option>Pant</option>

@@ -4,7 +4,6 @@ import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import Swal from "sweetalert2";
 import useAuth from "../../../Hooks/useAuth";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router";
 
 const ManageUser = () => {
   const axiosSecure = useAxiosSecure();

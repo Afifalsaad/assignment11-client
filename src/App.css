@@ -6,15 +6,16 @@
 
 @plugin "daisyui/theme" {
   name: "dark";
-  default: true;
   --color-primary: #ffcf00;
   --color-secondary: #a1b1ff;
 }
+
 @plugin "daisyui/theme" {
   name: "light";
   default: true;
   --color-primary: #ffcf00;
   --color-secondary: #131311;
+  --color-neutral: #fff0b2;
 }
 
 body {
