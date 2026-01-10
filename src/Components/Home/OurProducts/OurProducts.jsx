@@ -28,7 +28,7 @@ const OurProducts = () => {
         {products.map((product) => (
           <div
             key={product._id}
-            className="flex flex-col items-center p-6 text-left justify-center rounded-xl shadow-lg transition-transform duration-300 transform hover:-translate-y-2 hover:shadow-xl hover:cursor-pointer">
+            className="flex flex-col items-center p-6 text-left justify-center rounded-xl shadow-sm transition-transform duration-300 transform hover:-translate-y-1 hover:shadow-md hover:cursor-pointer">
             <div>
               <img
                 src={product.image}
@@ -50,22 +50,39 @@ const OurProducts = () => {
                 </span>
               </h2>
               <p className="my-1 line-clamp-4">
-                <span className="font-bold">Description:</span> {product.description}
+                <span className="font-bold">Description:</span>{" "}
+                {product.description}
               </p>
               <div className="card-actions mt-2">
                 <button className="px-3 py-1 border border-[#dfdfdf] text-sm hover:border-black/30 hover:cursor-pointer">
                   L
                 </button>
-                <p className="px-3 py-1 border border-[#dfdfdf] text-sm hover:border-black/30 hover:cursor-pointer">M</p>
-                <p className="px-3 py-1 border border-[#dfdfdf] text-sm hover:border-black/30 hover:cursor-pointer">XL</p>
-                <p className="px-3 py-1 border border-[#dfdfdf] text-sm hover:border-black/30 hover:cursor-pointer">XXL</p>
+                <p className="px-3 py-1 border border-[#dfdfdf] text-sm hover:border-black/30 hover:cursor-pointer">
+                  M
+                </p>
+                <p className="px-3 py-1 border border-[#dfdfdf] text-sm hover:border-black/30 hover:cursor-pointer">
+                  XL
+                </p>
+                <p className="px-3 py-1 border border-[#dfdfdf] text-sm hover:border-black/30 hover:cursor-pointer">
+                  XXL
+                </p>
               </div>
               <div>
-                <Link
-                  to={`/productDetails/${product._id}`}
-                  className="btn bg-primary/70 hover:bg-primary w-full mt-5 text-black">
-                  View Details
-                </Link>
+                <div class="flex w-full justify-center items-center gap-12 mt-3">
+                  <div class="bg-linear-to-b w-full from-gray-800/40 to-transparent p-1 rounded-md">
+                    <Link to={`/productDetails/${product._id}`}>
+                      <button class="p-1 btn w-full border-none rounded-md bg-linear-to-b from-gray-600 to-gray-500 shadow-[0_2px_4px_rgba(0,0,0,0.7)] hover:shadow-[0_4px_8px_rgba(0,0,0,0.6)] active:shadow-[0_0px_1px_rgba(0,0,0,0.8)] active:scale-[0.995] transition-all duration-200">
+                        <div class=" rounded-sm px-3 py-2">
+                          <div class="flex gap-2 items-center">
+                            <span class="font-semibold text-white">
+                              View Details
+                            </span>
+                          </div>
+                        </div>
+                      </button>
+                    </Link>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

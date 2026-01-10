@@ -47,7 +47,7 @@ const DashBoardLayout = () => {
   return (
     <div className="text-secondary">
       <Navbar></Navbar>
-      <div className="drawer lg:drawer-open">
+      <div className="drawer lg:drawer-open pt-16">
         <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
         <div className="drawer-content">
           {/* Navbar */}
@@ -86,7 +86,7 @@ const DashBoardLayout = () => {
             className="drawer-overlay"></label>
           <div className="flex min-h-full flex-col items-start bg-primary/10  is-drawer-close:w-14 is-drawer-open:w-64">
             {/* Sidebar content here */}
-            <ul className="menu w-full grow bg-yellow-100 lg:bg-primary/5">
+            <ul className="menu pt-17 lg:pt-0 w-full grow bg-yellow-100 lg:bg-primary/5">
               {/* List item */}
               <Link to="/dashboard">
                 <li>

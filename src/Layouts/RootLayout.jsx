@@ -28,7 +28,7 @@ const RootLayout = () => {
   }, [location.pathname]);
   return (
     <>
-      <Navbar></Navbar>
+        <Navbar></Navbar>
       <div className="max-w-[1200px] mx-auto">
         <Outlet></Outlet>
         <Footer></Footer>

@@ -8,6 +8,8 @@
   name: "dark";
   --color-primary: #ffcf00;
   --color-secondary: #a1b1ff;
+  --color-neutral: #061e29;
+  --color-neutral-accent: #ecf2d3;
 }
 
 @plugin "daisyui/theme" {
@@ -16,6 +18,7 @@
   --color-primary: #ffcf00;
   --color-secondary: #131311;
   --color-neutral: #fff0b2;
+  --color-neutral-accent: #ecf2d3;
 }
 
 body {
