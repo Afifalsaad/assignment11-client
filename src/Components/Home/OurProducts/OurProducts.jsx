@@ -17,10 +17,6 @@ const OurProducts = () => {
     },
   });
 
-  // if (isLoading) {
-  //   return <LoadingSpinner></LoadingSpinner>;
-  // }
-
   return (
     <div className="px-4 md:px-8 lg:px-16 py-12">
       <h2 className="text-4xl font-bold text-center mb-10">Our Products</h2>
@@ -93,81 +89,6 @@ const OurProducts = () => {
         </Link>
       </div>
     </div>
-    // <div className="">
-    //   <h2 className="text-4xl font-bold text-center py-8">Our Products</h2>
-    //   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-center items-center text-left">
-    //     {products.map((product) => (
-    //       <div
-    //         key={product._id}
-    //         className="flex flex-col items-center p-6 text-left justify-center rounded-xl shadow-sm transition-transform duration-300 transform hover:-translate-y-1 hover:shadow-md hover:cursor-pointer">
-    //         <div>
-    //           <img
-    //             src={product.image}
-    //             alt="Jacket"
-    //             className=" h-[200px] rounded-xl"
-    //           />
-    //         </div>
-
-    //         <div className="">
-    //           <h2 className="my-2">
-    //             <span className="text-xl font-bold">{product.name}</span>
-    //           </h2>
-
-    //           <h2 className="my-1">
-    //             {" "}
-    //             <span className="text-[#4a586a]">Price: </span>
-    //             <span className="text-green-600 font-semibold">
-    //               {product.price}/-
-    //             </span>
-    //           </h2>
-    //           <p className="my-1 line-clamp-4">
-    //             <span className="font-bold">Description:</span>{" "}
-    //             {product.description}
-    //           </p>
-    //           <div className="card-actions mt-2">
-    //             <button className="px-3 py-1 border border-[#dfdfdf] text-sm hover:border-black/30 hover:cursor-pointer">
-    //               L
-    //             </button>
-    //             <p className="px-3 py-1 border border-[#dfdfdf] text-sm hover:border-black/30 hover:cursor-pointer">
-    //               M
-    //             </p>
-    //             <p className="px-3 py-1 border border-[#dfdfdf] text-sm hover:border-black/30 hover:cursor-pointer">
-    //               XL
-    //             </p>
-    //             <p className="px-3 py-1 border border-[#dfdfdf] text-sm hover:border-black/30 hover:cursor-pointer">
-    //               XXL
-    //             </p>
-    //           </div>
-    //           <div>
-    //             <div class="flex w-full justify-center items-center gap-12 mt-3">
-    //               <div class="bg-linear-to-b w-full from-gray-800/40 to-transparent p-1 rounded-md">
-    //                 <Link to={`/productDetails/${product._id}`}>
-    //                   <button class="p-1 btn w-full border-none rounded-md bg-linear-to-b from-gray-600 to-gray-500 shadow-[0_2px_4px_rgba(0,0,0,0.7)] hover:shadow-[0_4px_8px_rgba(0,0,0,0.6)] active:shadow-[0_0px_1px_rgba(0,0,0,0.8)] active:scale-[0.995] transition-all duration-200">
-    //                     <div class=" rounded-sm px-3 py-2">
-    //                       <div class="flex gap-2 items-center">
-    //                         <span class="font-semibold text-white">
-    //                           View Details
-    //                         </span>
-    //                       </div>
-    //                     </div>
-    //                   </button>
-    //                 </Link>
-    //               </div>
-    //             </div>
-    //           </div>
-    //         </div>
-    //       </div>
-    //     ))}
-    //   </div>
-
-    //   <div className="text-center">
-    //     <Link to="/all-products">
-    //       <button className="btn hover:bg-primary/50 border border-primary px-8 my-6 bg-none text-center">
-    //         View All
-    //       </button>
-    //     </Link>
-    //   </div>
-    // </div>
   );
 };
 
