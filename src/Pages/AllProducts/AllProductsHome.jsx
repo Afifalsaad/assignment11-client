@@ -16,7 +16,6 @@ const AllProductsHome = () => {
   const {
     data: products = [],
     isLoading,
-    refetch,
     isFetching,
   } = useQuery({
     queryKey: ["products", currentPage],

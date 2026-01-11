@@ -11,6 +11,7 @@ const Register = () => {
   const { registerUser, updateUserProfile, googleSignIn } = useAuth();
   const axiosSecure = useAxiosSecure();
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -21,6 +22,7 @@ const Register = () => {
   } = useForm();
 
   const handleRegister = (data) => {
+    setLoading(true);
     const name = data.name;
     const email = data.email;
     const password = data.password;
@@ -29,48 +31,76 @@ const Register = () => {
     const image_URL_API = `https://api.imgbb.com/1/upload?key=${
       import.meta.env.VITE_IMAGE_HOST
     }`;
-    registerUser(email, password).then(() => {
-      //   store the image
-      const formData = new FormData();
-      formData.append("image", ProfileImg);
+    registerUser(email, password)
+      .then(() => {
+        if (!ProfileImg) {
+          const userInfo = {
+            userName: name,
+            userEmail: email,
+            photoURL: null,
+            role: role,
+            status: "pending",
+            createdAt: new Date().toLocaleString(),
+          };
 
-      //   append the img to profile
-      axios.post(image_URL_API, formData).then((res) => {
-        const photoURL = res.data.data.url;
-        const updatedProfile = {
-          displayName: name,
-          photoURL: res.data.data.url,
-        };
-
-        // update user profile
-        updateUserProfile(updatedProfile)
-          .then(() => {
+          return axiosSecure.post("/users", userInfo).then(() => {
+            Swal.fire({ title: "Registered Successfully", icon: "success" });
             navigate(location?.state || "/");
-          })
-          .catch((error) => {
-            console.log(error);
           });
+        }
+        //   store the image
+        const formData = new FormData();
+        formData.append("image", ProfileImg);
 
-        const userInfo = {
-          userName: name,
-          userEmail: email,
-          photoURL: photoURL,
-          role: role,
-          status: "pending",
-          createdAt: new Date().toLocaleString(),
-        };
+        //   append the img to profile
+        axios.post(image_URL_API, formData).then((res) => {
+          const photoURL = res.data.data.url;
+          const updatedProfile = {
+            displayName: name,
+            photoURL: res.data.data.url,
+          };
 
-        //   Add user to database
-        axiosSecure.post("/users", userInfo).then((res) => {
-          if (res.data.insertedId) {
-            Swal.fire({
-              title: "Registered Successfully",
-              icon: "success",
+          // update user profile
+          updateUserProfile(updatedProfile)
+            .then(() => {
+              navigate(location?.state || "/");
+            })
+            .catch((error) => {
+              console.log(error);
             });
-          }
+
+          const userInfo = {
+            userName: name,
+            userEmail: email,
+            photoURL: photoURL,
+            role: role,
+            status: "pending",
+            createdAt: new Date().toLocaleString(),
+          };
+
+          //   Add user to database
+          axiosSecure.post("/users", userInfo).then((res) => {
+            if (res.data.insertedId) {
+              Swal.fire({
+                title: "Registered Successfully",
+                icon: "success",
+              });
+              navigate(location?.state || "/");
+            }
+          });
         });
+      })
+      .catch((error) => {
+        console.log(error.message);
+        Swal.fire({
+          title: "Error",
+          text: `${error.message}`,
+          icon: "error",
+        });
+      })
+      .finally(() => {
+        setLoading(false);
       });
-    });
   };
 
   const handleGoogleRegistration = () => {
@@ -93,12 +123,15 @@ const Register = () => {
               title: "Registered Successfully",
               icon: "success",
             });
-            navigate(location?.state || "/");
           }
         });
       })
       .catch((error) => {
-        console.log(error);
+        Swal.fire({
+          title: "Error",
+          message: `${error}.message`,
+          icon: "Error",
+        });
       });
   };
 
@@ -109,7 +142,7 @@ const Register = () => {
 
   return (
     <div>
-      <div className="hero bg-base-200 min-h-screen">
+      <div className="hero pt-16 bg-base-200 min-h-screen">
         <div className="hero-content flex-col lg:flex-row-reverse">
           <div className="text-center lg:text-left">
             <h1 className="text-5xl font-bold">Register now!</h1>
@@ -183,8 +216,10 @@ const Register = () => {
                       special character and a number.
                     </p>
                   )}
-                  <button className="btn btn-primary text-black">
-                    Register
+                  <button
+                    type="submit"
+                    className="btn btn-primary text-black flex items-center justify-center">
+                    {loading ? "Registering..." : "Register"}
                   </button>
                 </fieldset>
                 <div>

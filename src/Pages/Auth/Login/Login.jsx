@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import useAuth from "../../../Hooks/useAuth";
 import Swal from "sweetalert2";
@@ -8,11 +8,13 @@ import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 const Login = () => {
   const { googleSignIn, loginUser } = useAuth();
   const axiosSecure = useAxiosSecure();
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, setValue } = useForm();
   const navigate = useNavigate();
   const location = useLocation();
+  const [loading, setLoading] = useState(false);
 
   const handleLogin = (data) => {
+    setLoading(true);
     const email = data.email;
     const password = data.password;
     loginUser(email, password)
@@ -29,10 +31,14 @@ const Login = () => {
           text: error.message,
           icon: "error",
         });
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
   const handleGoogleLogin = () => {
+    setLoading(true);
     googleSignIn()
       .then((result) => {
         const loggedInUser = result.user;
@@ -53,15 +59,19 @@ const Login = () => {
             });
           }
         });
-        Swal.fire({
-          title: "Logged In",
-          icon: "success",
-        });
         navigate(location?.state || "/");
       })
       .catch((error) => {
         console.log(error);
+      })
+      .finally(() => {
+        setLoading(false);
       });
+  };
+
+  const demoLogin = () => {
+    setValue("email", "admin@gmail.com");
+    setValue("password", "Admin@11");
   };
 
   return (
@@ -92,9 +102,16 @@ const Login = () => {
                   <div>
                     <a className="link link-hover">Forgot password?</a>
                   </div>
-                  <button className="btn btn-primary text-black">Login</button>
+                  <button className="btn btn-primary text-black">
+                    {loading ? "Logging in..." : "Login"}
+                  </button>
                 </fieldset>
               </form>
+              <button
+                onClick={demoLogin}
+                className="btn btn-secondary w-full text-white">
+                {loading ? "Logging in..." : "Demo Login"}
+              </button>
               <p>
                 New here?{" "}
                 <Link to="/register">
