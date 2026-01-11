@@ -2,13 +2,14 @@ import React from "react";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 import {
-  Bar,
-  BarChart,
-  CartesianGrid,
+  Radar,
+  RadarChart,
+  PolarGrid,
   Legend,
+  PolarAngleAxis,
+  PolarRadiusAxis,
   Tooltip,
-  XAxis,
-  YAxis,
+  ResponsiveContainer,
 } from "recharts";
 
 const AdminDashboard = () => {
@@ -22,11 +23,13 @@ const AdminDashboard = () => {
     },
   });
 
-  const barChartData = (data) => {
-    return data.map((item) => {
-      return { name: item._id, value: item.count };
-    });
-  };
+  const barChartData = stats.map((stat) => ({
+    name: stat._id,
+    value: stat.count,
+  }));
+
+  const maxValue =
+    stats.length > 0 ? Math.max(...stats.map((stat) => stat.count)) : 0;
 
   return (
     <div>
@@ -43,8 +46,26 @@ const AdminDashboard = () => {
       </div>
 
       {/* ReChart */}
-      <div className="mt-20 flex max-w-10/12 mx-auto">
-        <BarChart
+      <div className="mt-5 w-full max-w-3xl mx-auto">
+        <div style={{ width: "100%", height: 500 }}>
+          <ResponsiveContainer>
+            <RadarChart outerRadius="80%" data={stats}>
+              <PolarGrid />
+              <PolarAngleAxis dataKey="_id" />
+              <PolarRadiusAxis domain={[0, maxValue + 5]} />
+              <Radar
+                name="Stats"
+                dataKey="count"
+                stroke="#8884d8"
+                fill="#8884d8"
+                fillOpacity={0.6}
+              />
+              <Legend />
+              <Tooltip></Tooltip>
+            </RadarChart>
+          </ResponsiveContainer>
+        </div>
+        {/* <BarChart
           style={{
             width: "100%",
             maxWidth: "700px",
@@ -65,7 +86,7 @@ const AdminDashboard = () => {
           <Tooltip />
           <Legend />
           <Bar dataKey="value" fill="#8884d8" />
-        </BarChart>
+        </BarChart> */}
       </div>
     </div>
   );

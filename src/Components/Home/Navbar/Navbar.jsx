@@ -115,11 +115,11 @@ const Navbar = () => {
             <div>
               <div>
                 {user ? (
-                  <div className="relative items-center flex gap-4 group lg:mr-3">
-                    <div>
-                      <div className="w-9 h-9 overflow-hidden rounded-full">
-                        <Dropdown>
-                          <DropdownTrigger>
+                  <div className="relative items-center flex gap-4 lg:mr-3">
+                    <div className="w-9 h-9 rounded-full overflow-hidden">
+                      <Dropdown>
+                        <DropdownTrigger>
+                          <div className="outline-none border-none focus:outline-none ring-0 focus:ring-0 cursor-pointer">
                             {user.photoURL ? (
                               <img
                                 className="w-full h-full object-cover hover:cursor-pointer"
@@ -127,36 +127,36 @@ const Navbar = () => {
                                 alt="avatar"
                               />
                             ) : (
-                              <RxAvatar className="text-3xl hover:cursor-pointer text-black" />
+                              <RxAvatar className="text-4xl hover:cursor-pointer text-black" />
                             )}
-                          </DropdownTrigger>
-                          <DropdownMenu
-                            aria-label="Static Actions"
-                            className="bg-base-100 text-neutral-accent w-40 space-y-5 p-3 rounded-xl">
-                            <DropdownItem
-                              className="hover:bg-amber-300 px-2 py-1 rounded-md"
-                              key="new">
-                              Profile
-                            </DropdownItem>
-                            <DropdownItem
-                              className="hover:bg-amber-300 px-2 py-1 rounded-md"
-                              key="copy">
-                              About Us
-                            </DropdownItem>
-                            <DropdownItem
-                              className="hover:bg-amber-300 px-2 py-1 rounded-md"
-                              key="copy">
-                              Contact
-                            </DropdownItem>
-                            <DropdownItem
-                              key="delete"
-                              onClick={handleLogout}
-                              className="hover:bg-red-200 text-red-500 px-2 py-1 rounded-md">
-                              Logout
-                            </DropdownItem>
-                          </DropdownMenu>
-                        </Dropdown>
-                      </div>
+                          </div>
+                        </DropdownTrigger>
+                        <DropdownMenu
+                          aria-label="Static Actions"
+                          className="bg-base-100 text-neutral-accent w-40 space-y-5 p-3 rounded-xl">
+                          <DropdownItem
+                            className="hover:bg-amber-300 px-2 py-1 rounded-md"
+                            key="new">
+                            Profile
+                          </DropdownItem>
+                          <DropdownItem
+                            className="hover:bg-amber-300 px-2 py-1 rounded-md"
+                            key="copy">
+                            About Us
+                          </DropdownItem>
+                          <DropdownItem
+                            className="hover:bg-amber-300 px-2 py-1 rounded-md"
+                            key="copy">
+                            Contact
+                          </DropdownItem>
+                          <DropdownItem
+                            key="delete"
+                            onClick={handleLogout}
+                            className="hover:bg-red-200 text-red-500 px-2 py-1 rounded-md">
+                            Logout
+                          </DropdownItem>
+                        </DropdownMenu>
+                      </Dropdown>
                     </div>
                   </div>
                 ) : (
