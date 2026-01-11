@@ -2,13 +2,14 @@ import React, { useState } from "react";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router";
-import LoadingSpinner from "../Loading/Loading";
 
 const AllProductsHome = () => {
   const axiosSecure = useAxiosSecure();
   const [totalProducts, setTotalProducts] = useState(0);
   const [totalPage, setTotalPage] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
+  const [search, setSearch] = useState("");
+  const []
   const limit = 6;
 
   const {
@@ -31,62 +32,162 @@ const AllProductsHome = () => {
     },
   });
 
+  const filteredProducts = products.filter((product) => {
+    const searchedResult =
+      search === "" ||
+      product?.name.toLowerCase().includes(search.toLowerCase());
+
+    return searchedResult;
+  });
+
   refetch();
 
   if (isLoading && isFetching) {
-    return <LoadingSpinner></LoadingSpinner>;
+    return (
+      <div className="max-w-11/12 mx-auto pt-5 p-6 mb-10 animate-pulse">
+        {/* Total Products Count Skeleton */}
+        <div className="flex justify-center pt-14 pb-4">
+          <div className="h-8 w-48 bg-slate-200 dark:bg-slate-800 rounded-lg"></div>
+        </div>
+
+        {/* Search Bar Skeleton */}
+        <div className="max-w-md mx-auto mb-8">
+          <div className="h-12 w-full bg-slate-200 dark:bg-slate-800 rounded-full shadow-md"></div>
+        </div>
+
+        {/* Product Grid Skeleton */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-center items-center mt-5">
+          {[1, 2, 3, 4, 5, 6].map((i) => (
+            <div
+              key={i}
+              className="bg-slate-100 dark:bg-slate-800/50 flex flex-col items-center p-6 rounded-xl border border-slate-200 dark:border-slate-700">
+              {/* Image Skeleton */}
+              <div className="w-full flex justify-center">
+                <div className="h-[300px] w-full max-w-[250px] bg-base-100 rounded-xl"></div>
+              </div>
+
+              {/* Content Skeleton */}
+              <div className="text-left w-full mt-4 space-y-3">
+                {/* Name */}
+                <div className="h-6 w-3/4 bg-base-100 rounded"></div>
+
+                {/* Category */}
+                <div className="h-5 w-1/2 bg-base-100 rounded"></div>
+
+                {/* Price */}
+                <div className="h-5 w-1/3 bg-base-100 rounded"></div>
+
+                {/* Quantity */}
+                <div className="h-5 w-2/3 bg-base-100 rounded"></div>
+
+                {/* Sizes Skeleton */}
+                <div className="flex gap-2 mt-2">
+                  {[1, 2, 3, 4].map((s) => (
+                    <div key={s} className="h-8 w-10 bg-base-100 rounded"></div>
+                  ))}
+                </div>
+
+                {/* View Details Button Skeleton */}
+                <div className="h-12 w-full bg-base-100 rounded-lg mt-5"></div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Pagination Skeleton */}
+        <div className="flex justify-center flex-wrap gap-3 mt-16">
+          <div className="h-10 w-20 bg-slate-200 dark:bg-slate-800 rounded-lg"></div>
+          {[1, 2, 3].map((p) => (
+            <div
+              key={p}
+              className="h-10 w-10 bg-slate-200 dark:bg-slate-800 rounded-md"></div>
+          ))}
+          <div className="h-10 w-20 bg-slate-200 dark:bg-slate-800 rounded-lg"></div>
+        </div>
+      </div>
+    );
   }
 
   return (
     <div className="max-w-11/12 mx-auto pt-5 p-6 mb-10">
-      <h2 className="text-xl font-bold text-center pt-14 pb-4">
-        All Products: <span className="text-yellow-700">{totalProducts}</span>
-      </h2>
-      <div className="">
-        <form class="form relative">
-          <button class="absolute left-2 -translate-y-1/2 top-1/2 p-1">
-            <svg
-              width="17"
-              height="16"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              role="img"
-              aria-labelledby="search"
-              class="w-5 h-5 text-gray-700">
-              <path
-                d="M7.667 12.667A5.333 5.333 0 107.667 2a5.333 5.333 0 000 10.667zM14.334 14l-2.9-2.9"
-                stroke="currentColor"
-                stroke-width="1.333"
-                stroke-linecap="round"
-                stroke-linejoin="round"></path>
-            </svg>
-          </button>
-          <input
-            class="input rounded-full px-8 py-3 border-2 border-transparent focus:outline-none focus:border-blue-500 placeholder-gray-400 transition-all duration-300 shadow-md"
-            placeholder="Search..."
-            required=""
-            type="text"
-          />
-          <button
-            type="reset"
-            class="absolute left-70 -translate-y-1/2 top-1/2 p-1">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="w-5 h-5 text-gray-700"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor">
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M6 18L18 6M6 6l12 12"></path>
-            </svg>
-          </button>
-        </form>
+      <h2 className="text-xl font-bold text-center pt-14">All Products</h2>
+      <div>
+        <div className="flex flex-col lg:flex-row px-1 justify-between mx-auto max-w-6xl pt-5">
+          <div className="w-50">
+            <h1 className="pb-1">Search Product: </h1>
+            <fieldset className="input w-full">
+              <svg
+                className="h-[1em] opacity-50"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24">
+                <g
+                  strokeLinejoin="round"
+                  strokeLinecap="round"
+                  strokeWidth="2.5"
+                  fill="none"
+                  stroke="currentColor">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <path d="m21 21-4.3-4.3"></path>
+                </g>
+              </svg>
+              <input
+                onChange={(e) => setSearch(e.target.value)}
+                type="search"
+                placeholder="Search"
+              />
+            </fieldset>
+          </div>
+          <div className="flex flex-row gap-3 py-2">
+            {/* Category */}
+            <div className="w-50">
+              <h1>Category: </h1>
+              <fieldset className="fieldset w-full">
+                <select
+                  defaultValue={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                  className="select w-full">
+                  <option>All</option>
+                  <option>Garbage</option>
+                  <option>Illegal Construction</option>
+                  <option>Broken Public Property</option>
+                  <option>Road Damage</option>
+                </select>
+              </fieldset>
+            </div>
+            {/* Status */}
+            <div className="w-40">
+              <h1>Status: </h1>
+              <fieldset className="fieldset">
+                <select
+                  defaultValue={status}
+                  onChange={(e) => setStatus(e.target.value)}
+                  className="select">
+                  <option>All</option>
+                  <option>ongoing</option>
+                  <option>ended</option>
+                </select>
+              </fieldset>
+            </div>
+            {/* Sort */}
+            <div className="w-40">
+              <h1>Sort By Amount: </h1>
+              <fieldset className="fieldset">
+                <select
+                  defaultValue="All"
+                  onChange={(e) => setSort(e.target.value)}
+                  className="select">
+                  <option>None</option>
+                  <option>Higher - Lower</option>
+                  <option>Lower - Higher</option>
+                </select>
+              </fieldset>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-center items-center mt-5">
-        {products.map((product) => (
+        {filteredProducts.map((product) => (
           <div
             key={product._id}
             className="bg-primary/20 flex flex-col items-center p-6 rounded-xl shadow-lg transition-transform duration-300 transform hover:-translate-y-2 hover:shadow-xl hover:cursor-pointer">
