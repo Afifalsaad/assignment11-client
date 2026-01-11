@@ -116,12 +116,6 @@ const Navbar = () => {
               <div>
                 {user ? (
                   <div className="relative items-center flex gap-4 group lg:mr-3">
-                    <button
-                      onClick={handleLogout}
-                      className="btn btn-primary text-black hover:cursor-pointer">
-                      Logout
-                    </button>
-
                     <div>
                       <div className="w-9 h-9 overflow-hidden rounded-full">
                         <Dropdown>
@@ -156,6 +150,7 @@ const Navbar = () => {
                             </DropdownItem>
                             <DropdownItem
                               key="delete"
+                              onClick={handleLogout}
                               className="hover:bg-red-200 text-red-500 px-2 py-1 rounded-md">
                               Logout
                             </DropdownItem>
