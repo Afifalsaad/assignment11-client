@@ -110,7 +110,7 @@ const Login = () => {
               <button
                 onClick={demoLogin}
                 className="btn btn-secondary w-full text-white">
-                {loading ? "Logging in..." : "Demo Login"}
+                Demo Login
               </button>
               <p>
                 New here?{" "}

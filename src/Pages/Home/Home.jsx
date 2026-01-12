@@ -1,6 +1,5 @@
 import React from "react";
-import ThemeSwitcher from "../../ThemeSwitcher/SwitchTheme";
-import Navbar from "../../Components/Home/Navbar/Navbar";
+
 import Banner from "../../Components/Home/Banner/Banner";
 import OurProducts from "../../Components/Home/OurProducts/OurProducts";
 import HowItWorks from "../../Components/Home/HowItWorks/HowItWorks";
@@ -9,6 +8,9 @@ import WhyChooseUs from "../../Components/Home/WhyChooseUs/WhyChooseUs";
 import SecurityFeatures from "../../Components/Home/SecurityFeatures/SecurityFeatures";
 import useAuth from "../../Hooks/useAuth";
 import LoadingSpinner from "../Loading/Loading";
+import NewsLetter from "../NewsLetter/NewsLetter";
+import ContactUs from "../ContactUs/ContactUs";
+import FAQ from "../FAQ/FAQ";
 
 const Home = () => {
   const { loading } = useAuth();
@@ -24,7 +26,10 @@ const Home = () => {
       <HowItWorks></HowItWorks>
       <FeedBack></FeedBack>
       <WhyChooseUs></WhyChooseUs>
+      <ContactUs></ContactUs>
       <SecurityFeatures></SecurityFeatures>
+      <NewsLetter></NewsLetter>
+      <FAQ></FAQ>
     </div>
   );
 };

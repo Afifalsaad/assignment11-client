@@ -73,8 +73,8 @@ const OrderProduct = () => {
   };
 
   return (
-    <div className="text-secondary">
-      <div className="bg-primary/20">
+    <div className="text-secondary pt-16">
+      <div className="bg-base-100">
         <h2 className="text-4xl font-bold text-center py-12">Order Products</h2>
 
         {/* Table */}
