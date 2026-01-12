@@ -23,11 +23,6 @@ const AdminDashboard = () => {
     },
   });
 
-  const barChartData = stats.map((stat) => ({
-    name: stat._id,
-    value: stat.count,
-  }));
-
   const maxValue =
     stats.length > 0 ? Math.max(...stats.map((stat) => stat.count)) : 0;
 

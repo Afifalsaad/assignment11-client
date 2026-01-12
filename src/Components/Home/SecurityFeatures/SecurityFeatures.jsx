@@ -21,14 +21,14 @@ const SecurityFeatures = () => {
   ];
   return (
     <div>
-      <section className="py-20 bg-linear-to-br from-base-100 to-base-200">
+      <section className="py-20 bg-base-100">
         <div className="max-w-7xl mx-auto px-4">
           {/* Header */}
           <div className="text-center mb-14">
-            <h2 className="text-4xl font-bold text-primary mb-4">
+            <h2 className="text-2xl font-bold text-primary mb-1">
               Security & Compliance
             </h2>
-            <p className="max-w-2xl mx-auto text-base-content/70">
+            <p className="max-w-2xl text-sm mx-auto text-base-content/70">
               Enterprise-grade security and compliance standards to protect your
               data and global operations.
             </p>
@@ -39,7 +39,7 @@ const SecurityFeatures = () => {
             {securityFeatures.map((item, index) => (
               <div
                 key={index}
-                className="card bg-base-100 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
+                className="card bg-base-100 shadow-lg hover:shadow-2xl transition-all duration-300">
                 <div className="card-body text-center">
                   <div className="mx-auto w-16 h-16 rounded-2xl bg-linear-to-br from-[#F7E586] to-[#F2CB0A] text-primary-content text-3xl flex items-center justify-center mb-5">
                     {item.icon}

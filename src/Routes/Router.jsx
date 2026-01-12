@@ -26,6 +26,8 @@ import Profile from "../Pages/Profile/Profile";
 import TrackOrder from "../Pages/TrackOrder/TrackOrder";
 import ErrorPage from "../Pages/ErrorPage/ErrorPage";
 import BuyerRoutes from "./BuyerRoutes";
+import About from "../Pages/AboutUs/AboutUs";
+import Contact from "../Pages/Contact/Contact";
 
 export const router = createBrowserRouter([
   {
@@ -47,6 +49,14 @@ export const router = createBrowserRouter([
       {
         path: "all-products",
         Component: AllProductsHome,
+      },
+      {
+        path: "about-us",
+        Component: About,
+      },
+      {
+        path: "contact",
+        Component: Contact,
       },
       {
         path: "/trackings-log/:trackingId",

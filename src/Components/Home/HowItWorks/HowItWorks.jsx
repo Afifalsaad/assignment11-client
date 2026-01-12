@@ -66,7 +66,7 @@ const HowItWorks = () => {
   ];
 
   return (
-    <section className="py-20 bg-linear-to-br from-base-200 via-base-100 to-base-200">
+    <section className="bg-base-100">
       <div className="max-w-7xl mx-auto px-4">
         {/* Header */}
         <motion.div
@@ -75,10 +75,10 @@ const HowItWorks = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
           className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-primary">
+          <h2 className="text-2xl font-bold text-primary">
             How It Works
           </h2>
-          <p className="mt-4 text-base-content/70 max-w-2xl mx-auto">
+          <p className="mt-1 text-sm text-base-content/70 max-w-2xl mx-auto">
             Step-by-step workflow of our Garments Order & Production Tracker
             System
           </p>
@@ -95,7 +95,6 @@ const HowItWorks = () => {
             <motion.div
               key={step.id}
               variants={cardVariants}
-              whileHover={{ y: -8 }}
               className="group relative rounded-2xl p-6 bg-base-100 shadow-lg hover:shadow-2xl transition-all duration-300">
               {/* Icon */}
               <motion.div

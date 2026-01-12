@@ -34,14 +34,14 @@ const FeedBack = () => {
   ];
   return (
     <div>
-      <section className="py-20 bg-linear-to-br from-primary/10 via-base-200 to-secondary/10">
+      <section className="py-20 bg-base-100">
         <div className="max-w-6xl mx-auto px-4">
           {/* Header */}
           <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-primary">
+            <h2 className="text-2xl font-bold text-primary">
               What Our Customers Say
             </h2>
-            <p className="mt-3 text-base-content/70">
+            <p className="mt-1 text-sm text-base-content/70">
               Real feedback from buyers, factories & exporters
             </p>
           </div>

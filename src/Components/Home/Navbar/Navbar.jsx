@@ -47,12 +47,12 @@ const Navbar = () => {
         </NavLink>
       </li>
       <li>
-        <NavLink to="/" className="hover:text-black/50">
+        <NavLink to="about-us" className="hover:text-black/50">
           About Us
         </NavLink>
       </li>
       <li>
-        <NavLink to="/" className="hover:text-black/50">
+        <NavLink to="contact" className="hover:text-black/50">
           Contact
         </NavLink>
       </li>
@@ -142,12 +142,12 @@ const Navbar = () => {
                           <DropdownItem
                             className="hover:bg-amber-300 px-2 py-1 rounded-md"
                             key="copy">
-                            About Us
+                            <Link to="about-us">About Us</Link>
                           </DropdownItem>
                           <DropdownItem
                             className="hover:bg-amber-300 px-2 py-1 rounded-md"
                             key="copy">
-                            Contact
+                            <Link to="contact">Contact</Link>
                           </DropdownItem>
                           <DropdownItem
                             key="delete"
